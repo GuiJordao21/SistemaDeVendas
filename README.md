@@ -1,2 +1,2 @@
 # SistemaDeVendas
-Projeto smart factory feito na FIAP em parceria com a tsystem
+Projeto SMART-FACTORY desenvolvido na FIAP em parceria com a T-System
