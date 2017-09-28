@@ -1,7 +1,10 @@
 package br.com.fiap.beans;
 
-public class ItemVendaBeans implements Comparable<ItemVendaBeans>{
+import java.io.Serializable;
 
+public class ItemVendaBeans implements Comparable<ItemVendaBeans>,Serializable{
+
+	private static final long serialVersionUID = 4984584039342664179L;
 	private int cd_item;
 	private double preco;
 	private double qtd;
@@ -22,10 +25,10 @@ public class ItemVendaBeans implements Comparable<ItemVendaBeans>{
 	
 	public ItemVendaBeans(int cd_item, double preco, double qtd, double precoTot) {
 		super();
-		this.cd_item = cd_item;
-		this.preco = preco;
+		setCd_item(cd_item);
+		setPreco(preco);
 		setQtd(qtd);
-		this.precoTot = precoTot;
+		setPrecoTot(precoTot);
 	}
 	
 	//getters setters

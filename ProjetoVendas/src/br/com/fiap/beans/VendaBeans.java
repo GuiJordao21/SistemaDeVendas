@@ -1,11 +1,24 @@
 package br.com.fiap.beans;
 
-public class VendaBeans {
-	
+import java.io.Serializable;
+
+public class VendaBeans implements Comparable<VendaBeans>,Serializable{
+
+	private static final long serialVersionUID = 6759530891367495739L;
 	private int cd;
 	private double valor;
 	private String data=new String();
 	private String hora=new String();
+	
+	public int compareTo(VendaBeans outro) {
+		if (this.valor>outro.valor) {
+			return 1;
+		}else if (this.valor<outro.valor) {
+			return -1;
+		}else {
+			return 0;
+		}
+	}
 		
 	public VendaBeans(double valor, String data, String hora) {
 		super();

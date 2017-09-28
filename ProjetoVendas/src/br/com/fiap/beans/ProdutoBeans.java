@@ -1,13 +1,20 @@
 package br.com.fiap.beans;
 
-public class ProdutoBeans {
-	
+import java.io.Serializable;
+
+public class ProdutoBeans implements Comparable<ProdutoBeans>,Serializable{
+
+	private static final long serialVersionUID = -4371178774692160793L;
 	private int idProd;
 	private String nomeProd;
 	private String urlImg;
 	private double precoProd;
 	private String descProd;
 	private String disp;
+	
+	public int compareTo(ProdutoBeans outro) {
+		return this.nomeProd.compareTo(outro.nomeProd);
+	}
 	
 	public ProdutoBeans() {
 	}
@@ -35,7 +42,7 @@ public class ProdutoBeans {
 	}
 
 	public void setNomeProd(String nomeProd) {
-		this.nomeProd = nomeProd;
+		this.nomeProd = nomeProd.toUpperCase();
 	}
 
 	public String getUrlImg() {
@@ -59,7 +66,7 @@ public class ProdutoBeans {
 	}
 
 	public void setDescProd(String descProd) {
-		this.descProd = descProd;
+		this.descProd = descProd.toUpperCase();
 	}
 
 	public String getDisp() {
