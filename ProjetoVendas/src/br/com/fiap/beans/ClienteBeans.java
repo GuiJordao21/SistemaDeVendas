@@ -1,6 +1,6 @@
 package br.com.fiap.beans;
 
-public class ClienteBeans extends UsuarioBeans{
+public class ClienteBeans extends UsuarioBeans implements Serializable{
 
 	private int cdUsuario;
 	private int cnpj;
