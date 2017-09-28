@@ -1,9 +1,11 @@
 package br.com.fiap.beans;
 
-public class ClassFiscalBeans {
+public class ClassFiscalBeans implements Comparable<ClassFiscalBeans>,Serializable{
 	
 	private int cfop;
 	private String operacao=new String();
+	
+	public int compareTo()
 	
 	public ClassFiscalBeans() {}
 	
