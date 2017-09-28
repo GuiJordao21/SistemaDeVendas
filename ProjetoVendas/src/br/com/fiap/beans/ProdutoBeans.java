@@ -18,6 +18,15 @@ public class ProdutoBeans implements Comparable<ProdutoBeans>,Serializable{
 	
 	public ProdutoBeans() {
 	}
+	
+	public ProdutoBeans(String nomeProd, String urlImg, double precoProd, String descProd,String disp) {
+		super();
+		setNomeProd(nomeProd);
+		setUrlImg(urlImg);
+		setPrecoProd(precoProd);
+		setDescProd(descProd);
+		setDisp(disp);
+	}
 
 	public ProdutoBeans(int idProd, String nomeProd, String urlImg, double precoProd, String descProd,String disp) {
 		super();

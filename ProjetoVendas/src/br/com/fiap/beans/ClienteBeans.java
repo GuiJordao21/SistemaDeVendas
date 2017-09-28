@@ -20,6 +20,15 @@ public class ClienteBeans extends UsuarioBeans implements Serializable{
 		super(nmUsuario, dsemail, senha);
 	}
 	
+	public ClienteBeans(String nmUsuario, String dsemail, String senha, int cnpj, String rzSocial, String iE,
+			String url) {
+		super(nmUsuario, dsemail, senha);
+		setCnpj(cnpj);
+		setRzSocial(rzSocial);
+		setiE(iE);
+		setUrl(url);
+	}
+	
 	public ClienteBeans(String nmUsuario, String dsemail, String senha, int cdUsuario, int cnpj, String rzSocial, String iE,
 			String url) {
 		super(nmUsuario, dsemail, senha);
@@ -29,6 +38,7 @@ public class ClienteBeans extends UsuarioBeans implements Serializable{
 		setiE(iE);
 		setUrl(url);
 	}
+	
 	public int getCdUsuario() {
 		return cdUsuario;
 	}
