@@ -276,9 +276,7 @@ public class Menu {
 				}else if (opvend =='E') {
 					
 					int cd=Integer.parseInt(JOptionPane.showInputDialog("Insira o código da venda a ser deletada: "));
-					
-					//Atualizar para deletar a Nota Fiscal correspondente a venda
-					
+										
 					ItemVendaBO.deletarVenda(cd);
 					JOptionPane.showMessageDialog(null, VendaBO.deletar(cd));
 					
