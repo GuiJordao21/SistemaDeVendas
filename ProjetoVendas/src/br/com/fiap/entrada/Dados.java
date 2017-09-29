@@ -20,4 +20,8 @@ public class Dados {
 		return Long.parseLong(texto(msg));
 	}
 	
+	public static void mensagem(String msg){
+		JOptionPane.showMessageDialog(null, msg);
+	}
+	
 }
