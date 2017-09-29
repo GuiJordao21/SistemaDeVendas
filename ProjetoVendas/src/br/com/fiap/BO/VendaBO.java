@@ -14,7 +14,11 @@ public class VendaBO {
 			VendaBeans vb=new VendaBeans();
 			return vb;
 		}else{
-			return dao.cadastrar(x, email, data, hora);
+			
+			VendaBeans vb=dao.cadastrar(x, email, data, hora);
+			dao.fechar();
+			
+			return vb;
 		}		
 	}
 	
@@ -26,7 +30,11 @@ public class VendaBO {
 		if(cdv<=0||(cdv>lista.size()+1)) {
 			return "Código de venda inválido";
 		}else {
-			return dao.attValor(cdv, cd);
+			
+			String ret=dao.attValor(cdv, cd);
+			dao.fechar();
+			
+			return ret;
 		}		
 	}
 	
@@ -38,7 +46,11 @@ public class VendaBO {
 		if(cd<=0||cd>lista.size()) {
 			return "Código de venda inválido";
 		}else {
-			return dao.deletar(cd);
+			
+			String ret=dao.deletar(cd);
+			dao.fechar();
+			
+			return ret;
 		}			
 	}
 	
@@ -46,6 +58,7 @@ public class VendaBO {
 		
 		VendaDAO dao=new VendaDAO();
 		List<VendaBeans> lista=dao.consultar();
+		dao.fechar();
 		
 		if(lista.size()>0) {
 			return lista;
@@ -59,8 +72,13 @@ public class VendaBO {
 		
 		VendaDAO dao=new VendaDAO();
 		if (cdv>0&&desc>0&&desc<100) {
-			return dao.desconto(cdv, desc);
+			
+			String ret=dao.desconto(cdv, desc);
+			dao.fechar();
+			
+			return ret;
 		}else {
+			dao.fechar();
 			throw new RuntimeException();
 		}
 		
@@ -70,7 +88,11 @@ public class VendaBO {
 		
 		VendaDAO dao=new VendaDAO();
 		if (cdv>0&&desc>0) {
-			return dao.aumento(cdv, desc);
+			
+			String ret=dao.aumento(cdv, desc);
+			dao.fechar();
+			
+			return ret;
 		}else {
 			throw new RuntimeException();
 		}

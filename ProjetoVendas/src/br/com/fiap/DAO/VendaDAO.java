@@ -54,7 +54,6 @@ public class VendaDAO {
 		}
 		
 		stmt.close();
-		con.close();
 		rs.close();
 		
 		return vb;
@@ -79,7 +78,6 @@ public class VendaDAO {
 		stmt.executeUpdate();
 		
 		stmt.close();
-		con.close();
 		rs.close();
 		
 		return "valor atualizado, valor final: "+vlTot;
@@ -89,12 +87,26 @@ public class VendaDAO {
 	
 	public String deletar(int cd)throws Exception{
 		
+		stmt=con.prepareStatement("SELECT CD_NF FROM T_SPG_VENDA WHERE CD_VENDA=?");
+		stmt.setInt(1, cd);
+		rs=stmt.executeQuery();
+		
+		int cdNF=0;
+		
+		if(rs.next()){
+			cdNF=rs.getInt("CD_NF");
+		}
+		
+		stmt=con.prepareStatement("DELETE FROM T_SPG_NOTA_FISCAL WHERE CD_NF=?");
+		stmt.setInt(1, cdNF);
+		stmt.executeUpdate();
+		
 		stmt=con.prepareStatement("DELETE FROM T_SPG_VENDA WHERE CD_VENDA=?");
 		stmt.setInt(1, cd);
 		int y=stmt.executeUpdate();
 		
 		stmt.close();
-		con.close();
+		rs.close();
 		
 		return y+" venda Deletada";
 		
@@ -117,6 +129,9 @@ public class VendaDAO {
 			lista.add(v);
 		}
 		
+		stmt.close();
+		rs.close();
+		
 		return lista;
 		
 	}
@@ -129,7 +144,6 @@ public class VendaDAO {
 		stmt.executeUpdate();
 		
 		stmt.close();
-		con.close();
 		
 		return "Atualizado com sucesso!";
 	}
@@ -142,7 +156,6 @@ public class VendaDAO {
 		stmt.executeUpdate();
 		
 		stmt.close();
-		con.close();
 		
 		return "Atualizado com sucesso!";
 	}
