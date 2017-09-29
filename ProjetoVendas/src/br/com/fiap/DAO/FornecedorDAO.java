@@ -65,5 +65,47 @@ public class FornecedorDAO {
 		
 		return lista;
 	}//fim do método
+	
+	//deleta o fornecedor pelo código
+	public String deletar(int cd)throws Exception{
 		
+		stmt=con.prepareStatement("DELETE FROM T_SPG_FORNECEDOR "
+				+ "WHERE CD_FORNECEDOR=?");
+		stmt.setInt(1, cd);
+		int x=stmt.executeUpdate();
+		
+		stmt.close();
+		
+		return x+" fornecedor deletado.";		
+	}//fim do método
+	
+	//atualizar infos do fornecedor
+	public String atualizar(int cd, String coluna,String info)throws Exception{
+		
+		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET ?=? "
+				+ "WHERE CD_FORNECEDOR=?");
+		stmt.setString(1, coluna);
+		stmt.setString(2, info);
+		stmt.setInt(3, cd);
+		int x=stmt.executeUpdate();
+		
+		stmt.close();
+		
+		return x+" fornecedor atualizado.";
+	}
+	
+	public String atualizar(int cd, String coluna,long info)throws Exception{
+		
+		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET ?=? "
+				+ "WHERE CD_FORNECEDOR=?");
+		stmt.setString(1, coluna);
+		stmt.setLong(2, info);
+		stmt.setInt(3, cd);
+		int x=stmt.executeUpdate();
+		
+		stmt.close();
+		
+		return x+" fornecedor atualizado.";
+	}
+	
 }//fim da classe
