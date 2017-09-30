@@ -21,6 +21,7 @@ import br.com.fiap.beans.ProdutoBeans;
 import br.com.fiap.beans.VendaBeans;
 import br.com.fiap.entrada.Dados;
 import br.com.fiap.excecao.Excecao;
+import br.com.fiap.retorno.RetornoVenda;
 
 public class Menu {
 
@@ -54,13 +55,13 @@ public class Menu {
 														Dados.texto("Nome: "),
 														Dados.texto("Email: "),
 														Dados.texto("Senha: "),
-														Dados.inteiro("CNPJ"),
+														Dados.longo("CNPJ"),
 														Dados.texto("Inscrição Estadual: "),
 														Dados.texto("Razão Social: "),
 														Dados.texto("URL: ")
 														);
 					
-					System.out.println(ClienteBO.gravar(cli));
+					Dados.mensagem(ClienteBO.gravar(cli));
 					
 				}else if (opcli =='N') {
 					
@@ -119,7 +120,8 @@ public class Menu {
 					System.out.println("Opção invalida");
 				
 				}
-			}while (JOptionPane.showConfirmDialog(null,"CONTINUAR NO CLIENTE?","CLIENTE",JOptionPane.YES_NO_OPTION)==0);
+			}while (JOptionPane.showConfirmDialog(
+					null,"CONTINUAR NO CLIENTE?","CLIENTE",JOptionPane.YES_NO_OPTION)==0);
 		}
 		
 		
@@ -309,15 +311,18 @@ public class Menu {
 					}
 				}else if (opvend =='L') {
 					
-					List<VendaBeans> lista=VendaBO.consultar();
+					List<RetornoVenda> lista=VendaBO.consultar();
 					
-					for (VendaBeans vb : lista) {
+					for (RetornoVenda rb : lista) {
 						
 						System.out.println("-----------------------");
-						System.out.println("CÓDIGO: "+vb.getCd());
-						System.out.println("VALOR: "+vb.getValor());
-						System.out.println("DATA: "+vb.getData());
-						System.out.println("HORA: "+vb.getHora());
+						System.out.println("CÓDIGO NF: "+rb.getN().getCd());
+						System.out.println("TIPO NF: "+rb.getN().getTipo());
+						System.out.println("CÓDIGO VENDA: "+rb.getV().getCd());
+						System.out.println("CÓDIGO USUARIO: "+rb.getC().getCdUsuario());
+						System.out.println("VALOR: "+rb.getV().getValor());
+						System.out.println("DATA: "+rb.getV().getData());
+						System.out.println("HORA: "+rb.getV().getHora());
 						
 					}
 					
@@ -347,7 +352,6 @@ public class Menu {
 					System.out.println("PRODUTO "+i.getCd_item());
 					System.out.println("VALOR VENDIDO: "+i.getPrecoTot());
 					
-					
 				}
 				
 			}while (JOptionPane.showConfirmDialog(
@@ -359,7 +363,8 @@ public class Menu {
 				null,"CONTINUAR NO SISTEMA?","Projeto NAC",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0);
 				
          } catch (Exception e) {
-	        Excecao.getException(e);
+        	 e.printStackTrace();
+	        //System.out.println(Excecao.getException(e));
           }
 		
 		
