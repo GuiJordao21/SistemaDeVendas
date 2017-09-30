@@ -6,8 +6,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.fiap.beans.ClienteBeans;
+import br.com.fiap.beans.NotaFiscalBeans;
 import br.com.fiap.beans.VendaBeans;
 import br.com.fiap.conexao.Conexao;
+import br.com.fiap.retorno.RetornoVenda;
 
 
 public class VendaDAO {
@@ -112,21 +115,45 @@ public class VendaDAO {
 		
 	}
 	
-	public List<VendaBeans> consultar()throws Exception{
+	public List<RetornoVenda> consultar()throws Exception{
 		
-		stmt=con.prepareStatement("SELECT * FROM T_SPG_VENDA");
+		stmt=con.prepareStatement("SELECT\r\n" + 
+				"    N.CD_NF,\r\n" + 
+				"    V.CD_VENDA,\r\n" + 
+				"    V.CD_USUARIO,\r\n" + 
+				"    N.DS_TIPO,\r\n" + 
+				"    V.DT_VENDA,\r\n" + 
+				"    V.HR_VENDA,\r\n" + 
+				"    V.VL_VENDA\r\n" + 
+				"FROM T_SPG_VENDA V LEFT OUTER JOIN T_SPG_NOTA_FISCAL N\r\n" + 
+				"ON (V.CD_NF=N.CD_NF)");
 		rs=stmt.executeQuery();
 		
+		RetornoVenda r=null;
+		NotaFiscalBeans nf=null;
 		VendaBeans v=null;
-		List<VendaBeans> lista=new ArrayList<>();
+		ClienteBeans c=null;
+		List<RetornoVenda> lista=new ArrayList<>();
 		
 		while(rs.next()) {
+			r=new RetornoVenda();
+			nf=new NotaFiscalBeans();
 			v=new VendaBeans();
-			v.setCd(rs.getInt(1));
-			v.setValor(rs.getDouble(4));
-			v.setData(rs.getString(5));
-			v.setHora(rs.getString(6));
-			lista.add(v);
+			c=new ClienteBeans();			
+			
+			nf.setCd(rs.getInt("CD_NF"));
+			v.setCd(rs.getInt("CD_VENDA"));
+			c.setCdUsuario(rs.getInt("CD_USUARIO"));
+			nf.setTipo(rs.getString("DS_TIPO"));
+			v.setData(rs.getString("DT_VENDA"));
+			v.setHora(rs.getString("HR_VENDA"));
+			v.setValor(rs.getDouble("VL_VENDA"));
+			
+			r.setC(c);
+			r.setN(nf);
+			r.setV(v);
+			
+			lista.add(r);
 		}
 		
 		stmt.close();
