@@ -6,7 +6,7 @@ public class ClienteBeans extends UsuarioBeans implements Serializable{
 
 	private static final long serialVersionUID = -8674589315074693334L;
 	private int cdUsuario;
-	private int cnpj;
+	private long cnpj;
 	private String rzSocial;
 	private String iE;
 	private String url;
@@ -16,11 +16,15 @@ public class ClienteBeans extends UsuarioBeans implements Serializable{
 		super();
 	}
 	
+	public ClienteBeans(int cdUsuario) {
+		setCdUsuario(cdUsuario);
+	}
+	
 	public ClienteBeans(String nmUsuario, String dsemail, String senha) {
 		super(nmUsuario, dsemail, senha);
 	}
 	
-	public ClienteBeans(String nmUsuario, String dsemail, String senha, int cnpj, String rzSocial, String iE,
+	public ClienteBeans(String nmUsuario, String dsemail, String senha, long cnpj, String rzSocial, String iE,
 			String url) {
 		super(nmUsuario, dsemail, senha);
 		setCnpj(cnpj);
@@ -29,7 +33,7 @@ public class ClienteBeans extends UsuarioBeans implements Serializable{
 		setUrl(url);
 	}
 	
-	public ClienteBeans(String nmUsuario, String dsemail, String senha, int cdUsuario, int cnpj, String rzSocial, String iE,
+	public ClienteBeans(String nmUsuario, String dsemail, String senha, int cdUsuario, long cnpj, String rzSocial, String iE,
 			String url) {
 		super(nmUsuario, dsemail, senha);
 		setCdUsuario(cdUsuario);
@@ -45,10 +49,10 @@ public class ClienteBeans extends UsuarioBeans implements Serializable{
 	public void setCdUsuario(int cdUsuario) {
 		this.cdUsuario = cdUsuario;
 	}
-	public int getCnpj() {
+	public long getCnpj() {
 		return cnpj;
 	}
-	public void setCnpj(int cnpj) {
+	public void setCnpj(long cnpj) {
 		this.cnpj = cnpj;
 	}
 	public String getRzSocial() {

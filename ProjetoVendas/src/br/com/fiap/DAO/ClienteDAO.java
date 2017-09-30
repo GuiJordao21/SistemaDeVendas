@@ -40,7 +40,7 @@ public class ClienteDAO {
         
 		stmt=con.prepareStatement("INSERT INTO T_SPG_CLIENTE (CD_USUARIO,NR_CNPJ,DS_RAZAO_SOCIAL,DS_INSCRICAO_ESTADUAL,DS_URL) VALUES (?,?,?,?,?)");
 		stmt.setInt(1, ex);
-		stmt.setInt(2, objCliente.getCnpj());
+		stmt.setLong(2, objCliente.getCnpj());
 		stmt.setString(3, objCliente.getRzSocial());
 		stmt.setString(4, objCliente.getiE());
 		stmt.setString(5, objCliente.getUrl());
