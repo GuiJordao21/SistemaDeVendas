@@ -1,5 +1,7 @@
 package br.com.fiap.teste;
 
+import java.util.List;
+
 import br.com.fiap.DAO.FornecedorDAO;
 import br.com.fiap.beans.FornecedorBeans;
 import br.com.fiap.entrada.Dados;
@@ -20,42 +22,56 @@ public class TesteFornecedorCadastro {
 												);
 		Dados.mensagem(dao.cadastrar(fb));
 		
-		dao.consultarNome(Dados.texto("Qual o nome do fornecedor"));
+		
+		List<FornecedorBeans> lista=dao.consultarNome(Dados.texto("Qual o nome do fornecedor"));
+		
+		for (FornecedorBeans fb1: lista) {
+			System.out.println(fb1.getCd());
+			System.out.println(fb1.getNome());
+		}
+		
+		
 		
 		char opt=Dados.texto("Qual dado deseja atualizar?"
-				+ " -NOME-"
-				+ "/n-EMAIL-"
-				+ "/n-CNPJ-"
-				+ "/n-RAZÃO SOCIAL-").toUpperCase().charAt(0);
+				+ "\n-NOME-"
+				+ "\n-EMAIL-"
+				+ "\n-CNPJ-"
+				+ "\n-RAZÃO SOCIAL-").toUpperCase().charAt(0);
 		
-		if (opt=='N'){
-			
-			dao.atualizar(Dados.inteiro("Insira o código"),
-					"NM_FORNECEDOR",
-					Dados.texto("Insira o novo nome:"));
-			
-		}else if(opt=='E'){
-			
-			dao.atualizar(Dados.inteiro("Insira o código"),
-					"DS_EMAIL",
-					Dados.texto("Insira o novo email:"));
-			
-		}else if(opt=='C'){
-
-			dao.atualizar(Dados.inteiro("Insira o código"),
-					"NR_CNPJ",
-					Dados.longo("Insira o novo CNPJ:"));
-			
-		}else if(opt=='R'){
-			
-			dao.atualizar(Dados.inteiro("Insira o código"),
-					"DS_RAZAO_SOCIAL",
-					Dados.texto("Insira a nova Razão Social:"));
-			
-		}else{
-			Dados.mensagem("Opção inválida.");
+		switch (opt) {
+		
+			case 'N':				
+				Dados.mensagem(dao.atualizarN(
+						Dados.inteiro("Insira o código: "),
+						Dados.texto("Novo nome: ").toUpperCase()));
+				break;
+			case 'E':
+				Dados.mensagem(dao.atualizarE(
+						Dados.inteiro("Insira o código: "),
+						Dados.texto("Novo email: ")));				
+				break;
+			case 'C':
+				Dados.mensagem(dao.atualizarC(
+						Dados.inteiro("Insira o código: "),
+						Dados.longo("Novo CNPJ: ")));				
+				break;
+				
+			case 'R':
+				Dados.mensagem(dao.atualizarR(
+						Dados.inteiro("Insira o código: "),
+						Dados.texto("Nova Razão Social: ").toUpperCase()));				
+				break;
+			default:
+				
+				Dados.mensagem("Opção inválida.");
+				
+				break;
 		}
-
+		
+		
+		Dados.mensagem(dao.deletar(
+				Dados.inteiro("Insira o código do fornecedor a ser deletado: ")));
+		
 	}
 
 }
