@@ -42,8 +42,8 @@ public class FornecedorDAO {
 	public List<FornecedorBeans> consultarNome(String nome)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_FORNECEDOR WHERE "
-				+ "NM_FORNECEDOR LIKE %?%");
-		stmt.setString(1, nome);
+				+ "NM_FORNECEDOR LIKE ?");
+		stmt.setString(1, "%"+nome+"%");
 		rs=stmt.executeQuery();
 		
 		FornecedorBeans fb=null;
@@ -65,47 +65,68 @@ public class FornecedorDAO {
 		
 		return lista;
 	}//fim do método
-	
-	//deleta o fornecedor pelo código
-	public String deletar(int cd)throws Exception{
 		
-		stmt=con.prepareStatement("DELETE FROM T_SPG_FORNECEDOR "
-				+ "WHERE CD_FORNECEDOR=?");
-		stmt.setInt(1, cd);
-		int x=stmt.executeUpdate();
-		
-		stmt.close();
-		
-		return x+" fornecedor deletado.";		
-	}//fim do método
-	
 	//atualizar infos do fornecedor
-	public String atualizar(int cd, String coluna,String info)throws Exception{
-		
-		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET ?=? "
+	public String atualizarN(int cd,String info)throws Exception{
+		//att nome
+		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET NM_FORNECEDOR=? "
 				+ "WHERE CD_FORNECEDOR=?");
-		stmt.setString(1, coluna);
-		stmt.setString(2, info);
-		stmt.setInt(3, cd);
+		stmt.setString(1, info);
+		stmt.setInt(2, cd);
 		int x=stmt.executeUpdate();
 		
 		stmt.close();
 		
-		return x+" fornecedor atualizado.";
+		return x+" nome atualizado.";
 	}
 	
-	public String atualizar(int cd, String coluna,long info)throws Exception{
-		
-		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET ?=? "
+	public String atualizarE(int cd,String info)throws Exception{
+		//att email
+		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET DS_EMAIL=? "
 				+ "WHERE CD_FORNECEDOR=?");
-		stmt.setString(1, coluna);
-		stmt.setLong(2, info);
-		stmt.setInt(3, cd);
+		stmt.setString(1, info);
+		stmt.setInt(2, cd);
 		int x=stmt.executeUpdate();
 		
 		stmt.close();
 		
-		return x+" fornecedor atualizado.";
+		return x+" email atualizado.";
+	}
+	
+	public String atualizarR(int cd,String info)throws Exception{
+		//att razão social
+		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET DS_RAZAO_SOCIAL=? "
+				+ "WHERE CD_FORNECEDOR=?");
+		stmt.setString(1, info);
+		stmt.setInt(2, cd);
+		int x=stmt.executeUpdate();
+		
+		stmt.close();
+		
+		return x+" Razão Social atualizada.";
+	}
+	
+	public String atualizarC(int cd, long info)throws Exception{
+		
+		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET NR_CNPJ=? "
+				+ "WHERE CD_FORNECEDOR=?");
+		stmt.setLong(1, info);
+		stmt.setInt(2, cd);
+		int x=stmt.executeUpdate();
+		
+		stmt.close();
+		
+		return x+" cnpf atualizado.";
+	}
+	//fim dos métodos de Atualização
+	
+	public String deletar(int cd)throws Exception{
+		
+		stmt=con.prepareStatement("DELETE FROM T_SPG_FORNECEDOR WHERE CD_FORNECEDOR=?");
+		stmt.setInt(1, cd);
+		stmt.executeUpdate();
+		
+		return "Deletado com sucesso!";	
 	}
 	
 }//fim da classe
