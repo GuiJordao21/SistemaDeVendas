@@ -24,8 +24,14 @@ import br.com.fiap.excecao.Excecao;
 import br.com.fiap.retorno.RetornoVenda;
 
 public class Menu {
+	
+	static String usuario=new String();
+	static String senha=new String();
 
 	public static void main(String[] args) {
+		
+		usuario=Dados.texto("Insira seu Usuario");
+		senha=Dados.texto("Insira a senha");
 		
 		try {	 
 		do {char op1 =JOptionPane.showInputDialog("DIGITE UMA OPÇÃO: \n"+""
@@ -61,11 +67,11 @@ public class Menu {
 														Dados.texto("URL: ")
 														);
 					
-					Dados.mensagem(ClienteBO.gravar(cli));
+					Dados.mensagem(ClienteBO.gravar(cli,usuario,senha));
 					
 				}else if (opcli =='N') {
 					
-					Dao = new ClienteDAO();
+					Dao = new ClienteDAO(usuario,senha);
 					ClienteBeans cli= new ClienteBeans();
 					cli=Dao.consultar(Dados.texto("Email:"));
 					System.out.println("Nome do usuário: " +cli.getNmUsuario()+
@@ -78,7 +84,7 @@ public class Menu {
 					
 				}else if (opcli =='E') {
 					
-					Dao = new ClienteDAO(); 
+					Dao = new ClienteDAO(usuario,senha); 
 					System.out.println(Dao.apagar(
 											Dados.texto(
 													"Digite o Email:")
@@ -87,7 +93,7 @@ public class Menu {
 					
 				}else if (opcli =='A') {
 					
-					dao= new UsuarioDAO();
+					dao= new UsuarioDAO(usuario,senha);
 					System.out.println(dao.update(
 											Dados.texto(
 													"Digite o email Atual:"),
@@ -98,7 +104,7 @@ public class Menu {
 					
 				}else if (opcli =='L') {
 					
-					Dao = new ClienteDAO();
+					Dao = new ClienteDAO(usuario,senha);
 					
 					List<ClienteBeans> lista= Dao.listaCliente();
 					for (ClienteBeans c: lista) {
@@ -152,10 +158,10 @@ public class Menu {
 														Dados.texto("Disponibilidade: ")
 														);
 		
-					System.out.println(ProdutoBO.novoProduto(pb));
+					System.out.println(ProdutoBO.novoProduto(pb,usuario,senha));
 					
 				}else if (opprod =='N') {
-					dao= new ProdutoDAO();
+					dao= new ProdutoDAO(usuario,senha);
 					ProdutoBeans pb = dao.pesquisaProduto(
 							Dados.inteiro(
 									"Codigo do produto pesquisado: "
@@ -174,7 +180,8 @@ public class Menu {
 					
 					System.out.println(ProdutoBO.deletaProduto(
 							Dados.inteiro(
-									"Código do produto a ser deletado: ")
+									"Código do produto a ser deletado: "),
+							usuario,senha
 										)
 							);
 					
@@ -190,11 +197,11 @@ public class Menu {
 							JOptionPane.showInputDialog("Nova descricão: "),
 							JOptionPane.showInputDialog("Nova disponibilidade: "));
 
-					System.out.println(ProdutoBO.atualizaProduto(pb));
+					System.out.println(ProdutoBO.atualizaProduto(pb,usuario,senha));
 					
 				}else if (opprod =='L') {
 					
-					dao = new ProdutoDAO();
+					dao = new ProdutoDAO(usuario,senha);
 					List<ProdutoBeans> lista = dao.listarProduto();
 					
 					for(ProdutoBeans p : lista) {
@@ -234,7 +241,7 @@ public class Menu {
 													+ "L- LISTAR\n").toUpperCase().charAt(0);
 				if(opvend =='C') {
 					
-					dao=new NotaFiscalDAO();
+					dao=new NotaFiscalDAO(usuario,senha);
 					int nf=dao.cadastrar("VENDA", new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()));
 					
 					
@@ -242,7 +249,9 @@ public class Menu {
 					VendaBeans vb=VendaBO.cadastro(nf, 
 									Dados.texto("insira email: "),
 									new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime()),
-									new SimpleDateFormat("hh:mm:ss").format(Calendar.getInstance().getTime())
+									new SimpleDateFormat("hh:mm:ss").format(Calendar.getInstance().getTime()),
+									usuario,
+									senha
 									);	
 					
 					do {
@@ -251,20 +260,24 @@ public class Menu {
 																						"Digite o código do produto (1 até 8): "), 
 																				vb.getCd(),
 																				Dados.inteiro(
-																						"Insira Quantidade: ")
+																						"Insira Quantidade: "),
+																				usuario,
+																				senha
 																				));
 						
 					} while (JOptionPane.showConfirmDialog(null,"Deseja Inserir mais um item?","VENDA",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0);
 					
-					VendaBO.attValor(vb.getCd(), nf);
-					dao=new NotaFiscalDAO();
+					VendaBO.attValor(vb.getCd(), nf,usuario,senha);
+					dao=new NotaFiscalDAO(usuario,senha);
 					dao.attValor(vb.getCd(), nf);
 					
 				}else if (opvend =='N') {
 					
 					List<ItemVendaBeans> lista=ItemVendaBO.consultar
 													(Dados.inteiro
-															("Insira o código da venda:")
+															("Insira o código da venda:"),
+													usuario,
+													senha
 													);
 					
 					for (ItemVendaBeans i : lista) {
@@ -279,8 +292,8 @@ public class Menu {
 					
 					int cd=Integer.parseInt(JOptionPane.showInputDialog("Insira o código da venda a ser deletada: "));
 										
-					ItemVendaBO.deletarVenda(cd);
-					JOptionPane.showMessageDialog(null, VendaBO.deletar(cd));
+					ItemVendaBO.deletarVenda(cd,usuario,senha);
+					JOptionPane.showMessageDialog(null, VendaBO.deletar(cd,usuario,senha));
 					
 				}else if (opvend =='A') {
 					
@@ -293,7 +306,9 @@ public class Menu {
 												Dados.inteiro(
 														"Insira o código da venda: "),
 												Dados.decimal(
-														"Insira o a porcentagem de aumento (apenas números): ")
+														"Insira o a porcentagem de aumento (apenas números): "),
+												usuario,
+												senha
 												)
 										);
 						
@@ -304,14 +319,16 @@ public class Menu {
 												Dados.inteiro(
 														"Insira o código da venda: "),
 												Dados.decimal(
-														"Insira o a porcentagem de desconto (apenas números): ")
+														"Insira o a porcentagem de desconto (apenas números): "),
+												usuario,
+												senha
 												)
 										);
 						
 					}
 				}else if (opvend =='L') {
 					
-					List<RetornoVenda> lista=VendaBO.consultar();
+					List<RetornoVenda> lista=VendaBO.consultar(usuario,senha);
 					
 					for (RetornoVenda rb : lista) {
 						
@@ -343,7 +360,7 @@ public class Menu {
 			
 			do {
 				
-				List<ItemVendaBeans> lista=ItemVendaBO.maiorItemVenda();
+				List<ItemVendaBeans> lista=ItemVendaBO.maiorItemVenda(usuario,senha);
 				
 				Collections.sort(lista);
 				for (ItemVendaBeans i : lista) {
