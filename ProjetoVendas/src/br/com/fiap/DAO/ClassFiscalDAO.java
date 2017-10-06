@@ -16,9 +16,9 @@ public class ClassFiscalDAO {
 	private PreparedStatement stmt;
 	private ResultSet rs;
 	
-public ClassFiscalDAO() throws Exception{
+public ClassFiscalDAO(String usuario, String senha) throws Exception{
 		
-		con = new Conexao().getconnection();	
+		con = new Conexao().getConnection(usuario, senha);	
 	}
 	
 	public void fechar()throws Exception {

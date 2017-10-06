@@ -16,9 +16,9 @@ public class ItemVendaDAO {
 	private PreparedStatement stmt;
 	private ResultSet rs;
 	
-     public ItemVendaDAO() throws Exception{
+     public ItemVendaDAO(String usuario, String senha) throws Exception{
 		
-		con = new Conexao().getconnection();	
+		con = new Conexao().getConnection(usuario,senha);	
 	}
 	
 	
@@ -156,9 +156,9 @@ public class ItemVendaDAO {
 		return lista;
 	}
 	
-	public List<ItemVendaBeans> consultMaiorVal()throws Exception{
+	public List<ItemVendaBeans> consultMaiorVal(String usuario, String senha)throws Exception{
 		
-		ItemVendaDAO dao=new ItemVendaDAO();
+		ItemVendaDAO dao=new ItemVendaDAO(usuario, senha);
 		
 		List<ProdutoBeans> controle=dao.listaTudo();
 		

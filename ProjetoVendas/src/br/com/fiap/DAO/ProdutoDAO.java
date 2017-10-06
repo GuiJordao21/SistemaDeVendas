@@ -17,8 +17,8 @@ public class ProdutoDAO {
 	private PreparedStatement stmt = null;
 	private ResultSet rs=null;
 	
-	public ProdutoDAO() throws Exception{		 
-		con = new Conexao().getconnection();
+	public ProdutoDAO(String usuario, String senha) throws Exception{		 
+		con = new Conexao().getConnection(usuario, senha);
 	}
 	
 	public void fechar()throws Exception{

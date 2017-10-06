@@ -18,9 +18,9 @@ public class UsuarioDAO {
     private ResultSet rs;
 	
 	
-	public UsuarioDAO() throws Exception{
+	public UsuarioDAO(String usuario, String senha) throws Exception{
 		
-		con = new Conexao().getconnection();	
+		con = new Conexao().getConnection(usuario, senha);	
 	}
 	
 	public void fechar() throws Exception{
