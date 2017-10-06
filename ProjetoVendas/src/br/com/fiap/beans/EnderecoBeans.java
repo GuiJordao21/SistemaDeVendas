@@ -6,6 +6,7 @@ public class EnderecoBeans implements Serializable,Comparable<EnderecoBeans>{
 	
 	private static final long serialVersionUID = -1688725306809489939L;
 	private int numero;
+	private String cep = new String();
 	private String complemento=new String();
 	private String tipoLog=new String();
 	private String nomeRua=new String();
@@ -19,9 +20,10 @@ public class EnderecoBeans implements Serializable,Comparable<EnderecoBeans>{
 	
 	public EnderecoBeans(){}
 	
-	public EnderecoBeans(int numero, String complemento, String tipoLog, String nomeRua, String bairro, String cidade,
+	public EnderecoBeans(int numero,String cep, String complemento, String tipoLog, String nomeRua, String bairro, String cidade,
 			String estado) {
 		setNumero(numero);
+		setCep(cep);
 		setComplemento (complemento);
 		setTipoLog(tipoLog);
 		setNomeRua(nomeRua);
@@ -36,6 +38,12 @@ public class EnderecoBeans implements Serializable,Comparable<EnderecoBeans>{
 	}
 	public void setNumero(int numero) {
 		this.numero = numero;
+	}
+	public String getCep() {
+		return cep;
+	}
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
 	public String getComplemento() {
 		return complemento;
@@ -73,5 +81,4 @@ public class EnderecoBeans implements Serializable,Comparable<EnderecoBeans>{
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-
 }
