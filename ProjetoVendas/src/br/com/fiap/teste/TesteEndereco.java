@@ -27,6 +27,7 @@ public class TesteEndereco {
 											  );
 			
 			EnderecoDAO dao=new EnderecoDAO(usuario,senha);
+			dao.novoEndereco(e);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

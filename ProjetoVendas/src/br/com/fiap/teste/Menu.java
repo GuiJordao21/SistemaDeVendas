@@ -12,15 +12,16 @@ import br.com.fiap.BO.ItemVendaBO;
 import br.com.fiap.BO.ProdutoBO;
 import br.com.fiap.BO.VendaBO;
 import br.com.fiap.DAO.ClienteDAO;
+import br.com.fiap.DAO.EnderecoDAO;
 import br.com.fiap.DAO.NotaFiscalDAO;
 import br.com.fiap.DAO.ProdutoDAO;
 import br.com.fiap.DAO.UsuarioDAO;
 import br.com.fiap.beans.ClienteBeans;
+import br.com.fiap.beans.EnderecoBeans;
 import br.com.fiap.beans.ItemVendaBeans;
 import br.com.fiap.beans.ProdutoBeans;
 import br.com.fiap.beans.VendaBeans;
 import br.com.fiap.entrada.Dados;
-import br.com.fiap.excecao.Excecao;
 import br.com.fiap.retorno.RetornoVenda;
 
 public class Menu {
@@ -47,6 +48,7 @@ public class Menu {
 		// CLIENTE
 		if (op1=='C') {
 			
+			EnderecoDAO daoE=null;
 			ClienteDAO Dao =null;
 			UsuarioDAO dao=null;
 			
@@ -66,8 +68,19 @@ public class Menu {
 														Dados.texto("Razão Social: "),
 														Dados.texto("URL: ")
 														);
+					EnderecoBeans e=new EnderecoBeans(
+													  Dados.inteiro("Digite o número da casa"),
+													  Dados.texto("insira cep"),
+													  Dados.texto("insira o complemento"),
+													  Dados.texto("tipo do log"),
+													  Dados.texto("logradouro"),
+													  Dados.texto("bairro"),
+													  Dados.texto("cidade"),
+													  Dados.texto("estado")
+													  );
 					
 					Dados.mensagem(ClienteBO.gravar(cli,usuario,senha));
+					
 					
 				}else if (opcli =='N') {
 					

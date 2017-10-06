@@ -21,17 +21,17 @@ public class EnderecoDAO {
 		con.close();
 	}
 	
-	public void novoEndereco(EnderecoBeans e) throws SQLException{
-		
+	public String novoEndereco(EnderecoBeans e) throws SQLException{
 		
 		stmt = con.prepareStatement(
 				"SELECT CD_ESTADO FROM T_SPG_ESTADO WHERE NM_ESTADO = ?");
 		stmt.setString(1, e.getEstado());
 		rs = stmt.executeQuery();
-		int cde = 0;
+		int cde = 0;//código do estado
 		if(rs.next()) {
 			cde = rs.getInt("CD_ESTADO");
 		}
+		//Até aqui apenas pegamos o código do estado
 		
 		stmt = con.prepareStatement(""
 				+ "INSERT INTO T_SPG_CIDADE"
@@ -40,15 +40,18 @@ public class EnderecoDAO {
 		stmt.setInt(1, cde);
 		stmt.setString(2, e.getCidade());
 		stmt.executeUpdate();
+		//aqui inserimos na tabela cidade o cod da cidade, do estado(pegado anteriormente
+		//e tambem o nome da cidade
 		
 		stmt = con.prepareStatement(
 				"SELECT CD_CIDADE FROM T_SPG_CIDADE WHERE NM_CIDADE = ?");
 		stmt.setString(1, e.getCidade());
 		rs = stmt.executeQuery();
-		int cdc = 0;
+		int cdc = 0;//código da cidade
 		if(rs.next()) {
 			cdc = rs.getInt("CD_CIDADE");
 		}
+		//aqui pegamos o código da cidade
 		
 		stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_BAIRRO"
@@ -57,6 +60,8 @@ public class EnderecoDAO {
 		stmt.setInt(1, cdc);
 		stmt.setString(2, e.getBairro());
 		stmt.executeUpdate();
+		//aqui inserimos na tabela bairro o código dele
+		//o código da cidade e o nome do bairro
 		
 		stmt = con.prepareStatement(
 				"SELECT CD_BAIRRO FROM T_SPG_BAIRRO WHERE NM_BAIRRO = ?");
@@ -66,13 +71,14 @@ public class EnderecoDAO {
 		if(rs.next()) {
 			cdb = rs.getInt("CD_BAIRRO");
 		}
+		//aqui adquirimos o código do bairro
 		
-		stmt = con.prepareStatement(
+		/*stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_TIPO_LOG"
 				+ "(CD_TIPO_LOGRADOURO,DS_TIPO_LOGRADOURO)"
 				+ "VALUES (SEQ_TIPO_LOG.NEXTVAL,?)");
 		stmt.setString(1, e.getTipoLog());
-		stmt.executeUpdate();
+		stmt.executeUpdate();*/
 		
 		stmt = con.prepareStatement(
 				"SELECT CD_TIPO_LOGRADOURO FROM T_SPG_TIPO_LOG WHERE DS_TIPO_LOGRADOURO = ?");
@@ -82,16 +88,19 @@ public class EnderecoDAO {
 		if(rs.next()) {
 			cdtl = rs.getInt("CD_TIPO_LOGRADOURO");
 		}
+		//aqui pegamos o cd do tipo do logradouro
 		
 		stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_LOGRADOURO"
-				+ "(NR_CEP,CD_BAIRRO,CD_TIPO_LOGRADOURO)"
-				+ "VALUES (SEQ_BAIRRO.NEXTVAL,?,?)");
+				+ "(NR_CEP,CD_BAIRRO,CD_TIPO_LOGRADOURO,DS_DESCRICAO)"
+				+ "VALUES (?,?,?,?)");
 		stmt.setString(1, e.getCep());
 		stmt.setInt(2, cdb);
 		stmt.setInt(3, cdtl);
+		stmt.setString(4, e.getNomeRua());
 		stmt.executeUpdate();
 		
+		return "hahaha";
 		
 	}
 }
