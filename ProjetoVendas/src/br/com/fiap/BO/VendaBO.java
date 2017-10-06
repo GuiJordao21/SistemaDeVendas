@@ -8,9 +8,9 @@ import br.com.fiap.retorno.RetornoVenda;
 
 public class VendaBO {
 	
-	public static VendaBeans cadastro(int x,String email,String data,String hora)throws Exception{
+	public static VendaBeans cadastro(int x,String email,String data,String hora,String usuario,String senha)throws Exception{
 		
-		VendaDAO dao=new VendaDAO();
+		VendaDAO dao=new VendaDAO(usuario, senha);
 		
 		if(email.indexOf('@')<0){
 			VendaBeans vb=new VendaBeans();
@@ -23,9 +23,9 @@ public class VendaBO {
 		}		
 	}
 	
-	public static String attValor(int cdv, int cd)throws Exception{
+	public static String attValor(int cdv, int cd,String usuario,String senha)throws Exception{
 		
-		VendaDAO dao=new VendaDAO();
+		VendaDAO dao=new VendaDAO(usuario, senha);
 		List<RetornoVenda> lista=dao.consultar();
 		
 		if(cdv<=0||(cdv>lista.size()+1)) {
@@ -38,9 +38,9 @@ public class VendaBO {
 		}		
 	}
 	
-	public static String deletar(int cd)throws Exception{
+	public static String deletar(int cd,String usuario,String senha)throws Exception{
 		
-		VendaDAO dao=new VendaDAO();
+		VendaDAO dao=new VendaDAO(usuario, senha);
 		List<RetornoVenda> lista=dao.consultar();
 		
 		if(cd<=0||cd>lista.size()) {
@@ -53,9 +53,9 @@ public class VendaBO {
 		}			
 	}
 	
-	public static List<RetornoVenda> consultar()throws Exception{
+	public static List<RetornoVenda> consultar(String usuario,String senha)throws Exception{
 		
-		VendaDAO dao=new VendaDAO();
+		VendaDAO dao=new VendaDAO(usuario, senha);
 		List<RetornoVenda> lista=dao.consultar();
 		dao.fechar();
 		
@@ -67,9 +67,9 @@ public class VendaBO {
 		
 	}
 	
-	public static String desconto(int cdv, double desc)throws Exception{
+	public static String desconto(int cdv, double desc,String usuario,String senha)throws Exception{
 		
-		VendaDAO dao=new VendaDAO();
+		VendaDAO dao=new VendaDAO(usuario, senha);
 		if (cdv>0&&desc>0&&desc<100) {
 			
 			String ret=dao.desconto(cdv, desc);
@@ -83,9 +83,9 @@ public class VendaBO {
 		
 	}
 	
-	public static String aumento(int cdv, double desc)throws Exception{
+	public static String aumento(int cdv, double desc,String usuario,String senha)throws Exception{
 		
-		VendaDAO dao=new VendaDAO();
+		VendaDAO dao=new VendaDAO(usuario, senha);
 		if (cdv>0&&desc>0) {			
 			String ret=dao.aumento(cdv, desc);	
 			dao.fechar();

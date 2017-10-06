@@ -5,7 +5,7 @@ import br.com.fiap.beans.FornecedorBeans;
 
 public class FornecedorBO {
 
-	public static String cadastrar(FornecedorBeans fb)throws Exception{
+	public static String cadastrar(FornecedorBeans fb,String usuario, String senha)throws Exception{
 		
 		if(fb.getEmail().indexOf('@')<0) {
 			return "email inválido";
@@ -23,7 +23,7 @@ public class FornecedorBO {
 			return "razão social inválida";
 		}
 		
-		FornecedorDAO dao=new FornecedorDAO();
+		FornecedorDAO dao=new FornecedorDAO(usuario, senha);
 		return dao.cadastrar(fb);
 		
 	}
