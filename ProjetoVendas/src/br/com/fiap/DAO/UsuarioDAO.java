@@ -103,4 +103,28 @@ public class UsuarioDAO {
 		    
 			return minhalista;
 	 } 
+	 
+	 //login
+	 public UsuarioBeans logIn(String log, String senha)throws Exception{
+			
+			stmt=con.prepareStatement
+					("SELECT DS_EMAIL, DS_SENHA FROM T_SPG_USUARIO WHERE DS_EMAIL=? AND DS_SENHA=?");
+			stmt.setString(1, log);
+			stmt.setString(2, senha);
+			rs=stmt.executeQuery();
+			UsuarioBeans u=null;
+			
+			if(rs.next()){
+				u=new UsuarioBeans();
+				u.setDsemail(rs.getString("DS_EMAIL"));
+				u.setSenha(rs.getString("DS_SENHA"));
+			}
+			
+			stmt.close();
+			rs.close();
+			con.close();
+			
+			return u;
+			
+		}
 }
