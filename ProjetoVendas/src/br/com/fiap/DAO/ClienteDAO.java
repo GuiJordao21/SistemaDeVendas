@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.fiap.BO.EnderecoBO;
 import br.com.fiap.beans.ClienteBeans;
+import br.com.fiap.beans.EnderecoBeans;
 import br.com.fiap.conexao.Conexao;
 
 public class ClienteDAO {
@@ -26,7 +28,7 @@ public class ClienteDAO {
 	}
 	
 	//GRAVAR
-	public String gravar(String y,ClienteBeans objCliente) throws Exception {
+	public String gravar(String y,ClienteBeans objCliente,EnderecoBeans e,String usuario, String senha) throws Exception {
 		
 		stmt=con.prepareStatement("SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL=?");
         stmt.setString(1, y);
@@ -46,6 +48,8 @@ public class ClienteDAO {
 		stmt.setString(5, objCliente.getUrl());
 		stmt.execute();
 		stmt.close();
+		
+		EnderecoBO.cadastrar(ex,e,usuario, senha);
 		return "Cliente cadastrado com sucesso";
 	
 }

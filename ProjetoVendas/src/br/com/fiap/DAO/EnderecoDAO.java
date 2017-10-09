@@ -21,7 +21,7 @@ public class EnderecoDAO {
 		con.close();
 	}
 	
-	public String novoEndereco(EnderecoBeans e) throws SQLException{
+	public String novoEnderecoUser(int cdU, EnderecoBeans e) throws SQLException{
 		
 		stmt = con.prepareStatement(
 				"SELECT CD_ESTADO FROM T_SPG_ESTADO WHERE NM_ESTADO = ?");
@@ -73,13 +73,6 @@ public class EnderecoDAO {
 		}
 		//aqui adquirimos o código do bairro
 		
-		/*stmt = con.prepareStatement(
-				"INSERT INTO T_SPG_TIPO_LOG"
-				+ "(CD_TIPO_LOGRADOURO,DS_TIPO_LOGRADOURO)"
-				+ "VALUES (SEQ_TIPO_LOG.NEXTVAL,?)");
-		stmt.setString(1, e.getTipoLog());
-		stmt.executeUpdate();*/
-		
 		stmt = con.prepareStatement(
 				"SELECT CD_TIPO_LOGRADOURO FROM T_SPG_TIPO_LOG WHERE DS_TIPO_LOGRADOURO = ?");
 		stmt.setString(1, e.getTipoLog());
@@ -99,6 +92,14 @@ public class EnderecoDAO {
 		stmt.setInt(3, cdtl);
 		stmt.setString(4, e.getNomeRua());
 		stmt.executeUpdate();
+		
+		//agora preparamos o endereço especifico do usuario
+		
+		stmt=con.prepareStatement("INSERT INTO T_SPG_USUARIO_END VALUES (?,?,?,?)");
+		stmt.setInt(1, cdU);
+		stmt.setString(2, e.getCep());
+		stmt.setInt(3, e.getNumero());
+		stmt.setString(4, e.getComplemento());
 		
 		return "hahaha";
 		
