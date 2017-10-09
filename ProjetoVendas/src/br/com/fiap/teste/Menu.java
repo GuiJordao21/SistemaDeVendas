@@ -12,7 +12,6 @@ import br.com.fiap.BO.ItemVendaBO;
 import br.com.fiap.BO.ProdutoBO;
 import br.com.fiap.BO.VendaBO;
 import br.com.fiap.DAO.ClienteDAO;
-import br.com.fiap.DAO.EnderecoDAO;
 import br.com.fiap.DAO.NotaFiscalDAO;
 import br.com.fiap.DAO.ProdutoDAO;
 import br.com.fiap.DAO.UsuarioDAO;
@@ -20,6 +19,7 @@ import br.com.fiap.beans.ClienteBeans;
 import br.com.fiap.beans.EnderecoBeans;
 import br.com.fiap.beans.ItemVendaBeans;
 import br.com.fiap.beans.ProdutoBeans;
+import br.com.fiap.beans.TelefoneBeans;
 import br.com.fiap.beans.VendaBeans;
 import br.com.fiap.entrada.Dados;
 import br.com.fiap.retorno.RetornoVenda;
@@ -31,8 +31,10 @@ public class Menu {
 
 	public static void main(String[] args) {
 		
-		usuario=Dados.texto("Insira seu Usuario");
-		senha=Dados.texto("Insira a senha");
+		//usuario=Dados.texto("Insira seu Usuario");
+		//senha=Dados.texto("Insira a senha");
+		usuario="RM78514";
+		senha="250294";
 		
 		try {	 
 		do {char op1 =JOptionPane.showInputDialog("DIGITE UMA OPÇÃO: \n"+""
@@ -48,7 +50,6 @@ public class Menu {
 		// CLIENTE
 		if (op1=='C') {
 			
-			EnderecoDAO daoE=null;
 			ClienteDAO Dao =null;
 			UsuarioDAO dao=null;
 			
@@ -68,6 +69,7 @@ public class Menu {
 														Dados.texto("Razão Social: "),
 														Dados.texto("URL: ")
 														);
+					
 					EnderecoBeans e=new EnderecoBeans(
 													  Dados.inteiro("Digite o número da casa"),
 													  Dados.texto("insira cep"),
@@ -79,7 +81,17 @@ public class Menu {
 													  Dados.texto("estado")
 													  );
 					
-					Dados.mensagem(ClienteBO.gravar(cli,usuario,senha));
+					TelefoneBeans t=new TelefoneBeans(
+													  Dados.inteiro("Insira DDD"),
+													  Dados.texto("Insira o número"),
+													  Dados.inteiro("Insira o ramal"),
+													  Dados.inteiro("tipo fone\n"
+													  		+ "1-movel\n"
+													  		+ "2-fixo\n"
+													  		+ "3-comercial")
+													  );
+					
+					Dados.mensagem(ClienteBO.gravar(cli,e,t,usuario,senha));
 					
 					
 				}else if (opcli =='N') {

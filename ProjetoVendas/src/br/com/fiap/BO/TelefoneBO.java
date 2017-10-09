@@ -13,7 +13,7 @@ public class TelefoneBO {
 		return"";
 	}
 	
-	public static String novoTelefone(TelefoneBeans t, String email, String usuario, String senha) throws Exception{
+	public static String novoTelefone(int ex, TelefoneBeans t, String usuario, String senha) throws Exception{
 
 		if(t.getDdd()<99 || t.getDdd()>100) {
 			return "DDD inválido!";
@@ -24,7 +24,7 @@ public class TelefoneBO {
 		if(t.getRamal()==0) {
 			return "Ramal inválido!";
 		}
-		new TelefoneDAO(usuario, senha).novoTelefone(t, email);
+		new TelefoneDAO(usuario, senha).novoTelefone(ex, t);
 		return "";
 	}
 

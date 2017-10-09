@@ -24,7 +24,7 @@ public class TelefoneDAO {
 		con.close();
 	}
 	
-	public String novoTelefone(TelefoneBeans t, String email) throws SQLException {
+	public String novoTelefone(int ex, TelefoneBeans t) throws SQLException {
 		stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_TELEFONE"
 				+ "(CD_FONE, CD_TIPO_FONE,NR_DDD,NR_TELEFONE)"
@@ -33,16 +33,7 @@ public class TelefoneDAO {
 		stmt.setInt(2, t.getDdd());
 		stmt.setString(3, t.getNumero());
 		stmt.executeUpdate();
-		
-		stmt = con.prepareStatement(
-				"SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL = ?");
-		stmt.setString(1, email);
-		rs = stmt.executeQuery();
-		int cd = 0;
-		if(rs.next()) {
-			cd = rs.getInt("CD_USUARIO");
-		}
-		
+				
 		stmt = con.prepareStatement(
 				"SELECT CD_FONE FROM T_SPG_TELEFONE WHERE NR_TELEFONE = ?");
 		stmt.setString(1, t.getNumero());
@@ -57,7 +48,7 @@ public class TelefoneDAO {
 				+ "(CD_FONE,CD_USUARIO,NR_RAMAL)"
 				+ "VALUES (?,?,?)");
 		stmt.setInt(1,cdf);
-		stmt.setInt(2, cd);
+		stmt.setInt(2, ex);
 		stmt.setInt(3, t.getRamal());
 		stmt.executeQuery();
 		stmt.close();

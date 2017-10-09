@@ -4,10 +4,11 @@ import br.com.fiap.DAO.ClienteDAO;
 import br.com.fiap.DAO.UsuarioDAO;
 import br.com.fiap.beans.ClienteBeans;
 import br.com.fiap.beans.EnderecoBeans;
+import br.com.fiap.beans.TelefoneBeans;
 
 public class ClienteBO {
 
-	 public static String gravar(ClienteBeans obj,EnderecoBeans e,String usuario, String senha) throws Exception{
+	 public static String gravar(ClienteBeans obj,EnderecoBeans e,TelefoneBeans t,String usuario, String senha) throws Exception{
 		    if(obj.getNmUsuario().length()==0 || obj.getNmUsuario().length()>40 || obj.getNmUsuario() == null) {
 				return "Nome invalido!";
 			}
@@ -20,7 +21,7 @@ public class ClienteBO {
 	    		return "Email invalido";
 	    	}
 	    	
-	    	if (obj.getSenha().length()==0 || obj.getSenha().length()>10 || obj.getSenha()== null) {
+	    	if (obj.getSenha().length()==0 || obj.getSenha().length()>30 || obj.getSenha()== null) {
 	    		return "Senha Invalida";
 	    	}
 	    
@@ -41,7 +42,7 @@ public class ClienteBO {
 	    		return "Cliente ja cadastrado";
 	    	}
 	    	dao2.gravarUsuario(obj);
-	    	String msg = dao.gravar(obj.getDsemail(),obj,e,usuario,senha);
+	    	String msg = dao.gravar(obj.getDsemail(),obj,e,t,usuario,senha);
 	    	dao.fechar();
 	    	return msg;
 	    }

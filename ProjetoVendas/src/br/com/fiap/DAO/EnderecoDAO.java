@@ -101,7 +101,7 @@ public class EnderecoDAO {
 		stmt.setInt(3, e.getNumero());
 		stmt.setString(4, e.getComplemento());
 		
-		return "hahaha";
+		return "Endereço do usuario cadastrado com sucesso";
 		
 	}
 }
