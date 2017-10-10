@@ -8,7 +8,7 @@ public class EnderecoBO{
 	public static String cadastrar(int cdU,EnderecoBeans e,String usuario,String senha) throws Exception{
 		
 		EnderecoDAO dao=new EnderecoDAO(usuario,senha);
-		return dao.novoEnderecoUser(cdU,e);
+		return dao.novoEndereco(cdU,e);
 		
 	}
 
