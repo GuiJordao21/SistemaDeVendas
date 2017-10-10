@@ -1,11 +1,12 @@
 package br.com.fiap.BO;
 
 import br.com.fiap.DAO.FornecedorDAO;
+import br.com.fiap.beans.EnderecoBeans;
 import br.com.fiap.beans.FornecedorBeans;
 
 public class FornecedorBO {
 
-	public static String cadastrar(FornecedorBeans fb,String usuario, String senha)throws Exception{
+	public static String cadastrar(FornecedorBeans fb,EnderecoBeans e,String usuario, String senha)throws Exception{
 		
 		if(fb.getEmail().indexOf('@')<0) {
 			return "email inválido";
@@ -24,7 +25,7 @@ public class FornecedorBO {
 		}
 		
 		FornecedorDAO dao=new FornecedorDAO(usuario, senha);
-		return dao.cadastrar(fb);
+		return dao.cadastrar(fb,e,usuario,senha);
 		
 	}
 

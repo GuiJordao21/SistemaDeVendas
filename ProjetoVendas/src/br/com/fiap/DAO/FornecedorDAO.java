@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.fiap.beans.EnderecoBeans;
 import br.com.fiap.beans.FornecedorBeans;
 import br.com.fiap.conexao.Conexao;
 
@@ -24,7 +25,7 @@ public class FornecedorDAO {
 	}
 	
 	//método para cadastro de fornecedores
-	public String cadastrar(FornecedorBeans fb)throws Exception{
+	public String cadastrar(FornecedorBeans fb,EnderecoBeans e,String usuario, String senha)throws Exception{
 		
 		stmt=con.prepareStatement("INSERT INTO T_SPG_FORNECEDOR VALUES("
 				+ "SEQ_FORNECEDOR.NEXTVAL,?,?,?,?)");
@@ -33,7 +34,25 @@ public class FornecedorDAO {
 		stmt.setLong(3,fb.getCnpj());
 		stmt.setString(4,fb.getRzSocial());
 		stmt.executeUpdate();
-				
+		
+		stmt=con.prepareStatement("SELECT CD_FORNECEDOR FROM "
+				+ "T_SPG_FORNECEDOR WHERE DS_EMAIL=?");
+		stmt.setString(1, fb.getEmail());
+		rs=stmt.executeQuery();
+		int x=0;
+		if(rs.next()){
+			x=rs.getInt("CD_FORNECEDOR");
+		}
+		
+		EnderecoDAO dao=null;
+		try{
+			dao=new EnderecoDAO(usuario, senha);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		dao.novoEndereco(fb.getEmail(), x, e);
+		
 		return "Fornecedor Cadastrado";
 		
 	}//fim do método
