@@ -15,7 +15,7 @@ public class EstoqueBO {
 	}
 	
 	public static String novoEstoque(EstoqueBeans e, String usuario, String senha) throws Exception{
-		if(e.getEndereco().getCep().length()!=9 || e.getEndereco().getCep() == null) {
+		if(e.getEndereco().getCep().length()!=8 || e.getEndereco().getCep() == null) {
 			return "CEP inválido!";
 		}
 		if(e.getQntLimite()<0 || e.getQntLimite()>999999) {
