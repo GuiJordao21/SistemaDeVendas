@@ -1,5 +1,7 @@
 package br.com.fiap.BO;
 
+import java.util.List;
+
 import br.com.fiap.DAO.FornecedorDAO;
 import br.com.fiap.beans.EnderecoBeans;
 import br.com.fiap.beans.FornecedorBeans;
@@ -25,7 +27,26 @@ public class FornecedorBO {
 		}
 		
 		FornecedorDAO dao=new FornecedorDAO(usuario, senha);
-		return dao.cadastrar(fb,e,usuario,senha);
+		String x=dao.cadastrar(fb, e, usuario, senha);
+		dao.fechar();
+		
+		return x;
+		
+	}
+	
+	public static List<FornecedorBeans> consultarNome(String nome,String usuario, String senha)throws Exception{
+		
+		FornecedorDAO dao=new FornecedorDAO(usuario, senha);
+		List<FornecedorBeans> lista=dao.consultarNome(nome);
+		dao.fechar();
+		return lista;
+		
+	}
+	
+	public static String deletar(int cd,String usuario, String senha)throws Exception{
+		
+		FornecedorDAO dao=new FornecedorDAO(usuario,senha);
+		return dao.deletar(cd);
 		
 	}
 
