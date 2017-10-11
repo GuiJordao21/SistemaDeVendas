@@ -20,6 +20,12 @@ public class EnderecoBeans implements Serializable,Comparable<EnderecoBeans>{
 	
 	public EnderecoBeans(){}
 	
+	public EnderecoBeans(int numero,String cep, String complemento){		
+		setNumero(numero);
+		setCep(cep);
+		setComplemento (complemento);		
+	}
+	
 	public EnderecoBeans(int numero,String cep, String complemento, String tipoLog, String nomeRua, String bairro, String cidade,
 			String estado) {
 		setNumero(numero);
