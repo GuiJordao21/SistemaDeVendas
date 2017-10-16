@@ -14,7 +14,19 @@ public class RetornoVenda implements Serializable,Comparable<RetornoVenda>{
 	private ClienteBeans c;
 	
 	public int compareTo(RetornoVenda outro) {
-		return this.c.compareTo(outro.c);
+		
+		/*int esse=Integer.parseInt(this.v.getData().substring(3, 5));
+		int aquele=Integer.parseInt(outro.v.getData().substring(3, 5));*/
+		
+		if (Integer.parseInt(this.v.getData().substring(3, 5))>
+				Integer.parseInt(outro.v.getData().substring(3, 5))) {
+			return 1;
+		}else if (Integer.parseInt(this.v.getData().substring(3, 5))<
+				Integer.parseInt(outro.v.getData().substring(3, 5))) {
+			return -1;
+		}else {
+			return 0;
+		}
 	}
 	
 	public RetornoVenda() {}
