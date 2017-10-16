@@ -28,11 +28,12 @@ public class FornecedorDAO {
 	public String cadastrar(FornecedorBeans fb,EnderecoBeans e,String usuario, String senha)throws Exception{
 		
 		stmt=con.prepareStatement("INSERT INTO T_SPG_FORNECEDOR VALUES("
-				+ "SEQ_FORNECEDOR.NEXTVAL,?,?,?,?)");
+				+ "SEQ_FORNECEDOR.NEXTVAL,?,?,?,?,?)");
 		stmt.setString(1,fb.getNome());
 		stmt.setString(2,fb.getEmail());
 		stmt.setLong(3,fb.getCnpj());
 		stmt.setString(4,fb.getRzSocial());
+		stmt.setInt(5, fb.getCdm());
 		stmt.executeUpdate();
 		
 		stmt=con.prepareStatement("SELECT CD_FORNECEDOR FROM "
@@ -74,7 +75,8 @@ public class FornecedorDAO {
 									rs.getString(2),
 									rs.getString(3),
 									rs.getLong(4),
-									rs.getString(5)
+									rs.getString(5),
+									rs.getInt(6)
 									);
 			lista.add(fb);
 		}

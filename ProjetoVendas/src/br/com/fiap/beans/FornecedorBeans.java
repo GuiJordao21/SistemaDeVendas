@@ -10,7 +10,8 @@ public class FornecedorBeans implements Serializable,Comparable<FornecedorBeans>
 	private String email=new String();
 	private long cnpj;
 	private String rzSocial=new String();
-	
+	private int cdm;
+
 	public int compareTo(FornecedorBeans outro){
 		return this.rzSocial.compareTo(outro.rzSocial);
 	}
@@ -24,12 +25,13 @@ public class FornecedorBeans implements Serializable,Comparable<FornecedorBeans>
 		setRzSocial(rzSocial);
 	}
 	
-	public FornecedorBeans(int cd, String nome, String email, long cnpj, String rzSocial) {
+	public FornecedorBeans(int cd, String nome, String email, long cnpj, String rzSocial,int cdm) {
 		setCd(cd);
 		setNome(nome);
 		setEmail(email);
 		setCnpj(cnpj);
 		setRzSocial(rzSocial);
+		setCdm(cdm);
 	}
 	
 	//getters setters
@@ -62,5 +64,11 @@ public class FornecedorBeans implements Serializable,Comparable<FornecedorBeans>
 	}
 	public void setRzSocial(String rzSocial) {
 		this.rzSocial = rzSocial.toUpperCase();
+	}
+	public int getCdm() {
+		return cdm;
+	}
+	public void setCdm(int cdm) {
+		this.cdm = cdm;
 	}
 }
