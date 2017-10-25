@@ -14,23 +14,12 @@ import br.com.fiap.beans.TelefoneBeans;
 import br.com.fiap.conexao.Conexao;
 
 public class ClienteDAO {
- 
-	private Connection con;
+
 	private PreparedStatement stmt;
     private ResultSet rs;
 	
-	
-	public ClienteDAO(String usuario, String senha) throws Exception{
-		
-		con = new Conexao().getConnection(usuario, senha);	
-	}
-	
-	public void fechar() throws Exception{
-		con.close();
-	}
-	
 	//GRAVAR
-	public String gravar(String y,ClienteBeans objCliente,EnderecoBeans e,TelefoneBeans t, String usuario, String senha) throws Exception {
+	public String gravar(String y,ClienteBeans objCliente,EnderecoBeans e,TelefoneBeans t, Connection con) throws Exception {
 		
 		stmt=con.prepareStatement("SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL=?");
         stmt.setString(1, y);
@@ -51,15 +40,15 @@ public class ClienteDAO {
 		stmt.execute();
 		stmt.close();
 		
-		EnderecoBO.cadastrar(ex,e,usuario, senha);
-		TelefoneBO.novoTelefone(ex,t,usuario,senha);
+		EnderecoBO.cadastrar(ex,e,con);
+		TelefoneBO.novoTelefone(ex,t,con);
 		
 		return "Cliente cadastrado com sucesso";
 	
 }
 	
 	//UPDATE
-	public String updateCliente(String y, ClienteBeans email) throws Exception{
+	public String updateCliente(String y, ClienteBeans email, Connection con) throws Exception{
 		
 		stmt =con.prepareStatement("UPDATE T_SPG_USUARIO SET DS_EMAIL=? WHERE DS_EMAIL=?");
 		stmt.setString(1, email.getDsemail());
@@ -73,7 +62,7 @@ public class ClienteDAO {
 	
 	//DELETE
 	
-	 public String apagar(String y) throws Exception{
+	 public String apagar(String y, Connection con) throws Exception{
 		
 		  stmt=con.prepareStatement("SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL=?");
 	      stmt.setString(1, y);
@@ -95,7 +84,7 @@ public class ClienteDAO {
 	 }
 	 
 	 //CONSULTAR
-	 public ClienteBeans consultar(String y)throws Exception{
+	 public ClienteBeans consultar(String y, Connection con)throws Exception{
 		    stmt=con.prepareStatement("SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL=?");
 	        stmt.setString(1, y);
 	        rs=stmt.executeQuery();
@@ -133,7 +122,7 @@ public class ClienteDAO {
 	 
 	 
 	//LISTAR
-	 public List<ClienteBeans> listaCliente() throws Exception {    
+	 public List<ClienteBeans> listaCliente(Connection con) throws Exception {    
 		    
 		    List<ClienteBeans> minhalista = new ArrayList<ClienteBeans>();
 		    ClienteBeans cli = new ClienteBeans ();
@@ -156,13 +145,7 @@ public class ClienteDAO {
 		    stmt.close();
 	 return minhalista;
 	 
-	 }
-	 
-	 
-	 
-	 
-	 
-	
+	 }	
 }
 
 	 

@@ -7,26 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.beans.ClassFiscalBeans;
-import br.com.fiap.conexao.Conexao;
 
 
 public class ClassFiscalDAO {
-	
-	private Connection con;
+
 	private PreparedStatement stmt;
 	private ResultSet rs;
 	
-public ClassFiscalDAO(String usuario, String senha) throws Exception{
-		
-		con = new Conexao().getConnection(usuario, senha);	
-	}
-	
-	public void fechar()throws Exception {
-		con.close();
-	}
-	
 	//esse método cadastra uma nova classificão fiscal
-	public String cadastrar(ClassFiscalBeans x)throws Exception{
+	public String cadastrar(ClassFiscalBeans x, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("INSERT INTO T_SPG_CLASS_FISCAL VALUES(SEQ_CLASS_FISCAL.NEXTVAL,?,?)");
 		stmt.setInt(1, x.getCfop());
@@ -40,7 +29,7 @@ public ClassFiscalDAO(String usuario, String senha) throws Exception{
 	
 	
 	//Esse método procura uma pela natureza da operação
-	public List<ClassFiscalBeans> consultaNome(String x)throws Exception{
+	public List<ClassFiscalBeans> consultaNome(String x, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_CLASS_FISCAL WHERE DS_NATUREZA_OP=?");
 		stmt.setString(1,x);
@@ -65,7 +54,7 @@ public ClassFiscalDAO(String usuario, String senha) throws Exception{
 	}//fim método
 	
 	//Esse método procura pelo cfop
-	public List<ClassFiscalBeans> consultaNumero(int x)throws Exception{
+	public List<ClassFiscalBeans> consultaNumero(int x, Connection con)throws Exception{
 			
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_CLASS_FISCAL WHERE NR_CFOP=?");
 		stmt.setInt(1,x);
@@ -90,7 +79,7 @@ public ClassFiscalDAO(String usuario, String senha) throws Exception{
 	}//fim método
 	
 	//esse método procura o nome da operaçaõ para apaga-la(o nome deve ser escrito exatamente como no banco)
-	public String deletarNome(String x)throws Exception{
+	public String deletarNome(String x, Connection con)throws Exception{
 	
 		stmt=con.prepareStatement("DELETE FROM T_SPG_CLASS_FISCAL WHERE DS_NATUREZA_OP=?");
 		stmt.setString(1, x);
@@ -104,7 +93,7 @@ public ClassFiscalDAO(String usuario, String senha) throws Exception{
 	}//fim do método
 	
 	//esse método procura o numero da operação e a apaga do banco	
-	public String deletarNumero(int x)throws Exception{
+	public String deletarNumero(int x, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("DELETE FROM T_SPG_CLASS_FISCAL WHERE NR_CFOP=?");
 		stmt.setInt(1, x);
@@ -118,7 +107,7 @@ public ClassFiscalDAO(String usuario, String senha) throws Exception{
 	}//fim do método
 	
 	//atualiza o nome das operações
-	public String attNome(String x, String y)throws Exception{
+	public String attNome(String x, String y, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("UPDATE T_SPG_CLASS_FISCAL SET DS_NATUREZA_OP=? WHERE DS_NATUREZA_OP=?");
 		stmt.setString(1, y);
@@ -133,7 +122,7 @@ public ClassFiscalDAO(String usuario, String senha) throws Exception{
 	}//fim método
 	
 	//ATULIZA O NUMERO DA OPERAÇÃO
-	public String attNumero(int x, int y)throws Exception{
+	public String attNumero(int x, int y, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("UPDATE T_SPG_CLASS_FISCAL SET NR_CFOP=? WHERE NR_CFOP=?");
 		stmt.setInt(1, y);

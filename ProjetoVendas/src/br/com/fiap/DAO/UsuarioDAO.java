@@ -9,26 +9,14 @@ import java.util.List;
 
 import br.com.fiap.beans.ClienteBeans;
 import br.com.fiap.beans.UsuarioBeans;
-import br.com.fiap.conexao.Conexao;
 
 public class UsuarioDAO {
 
-	private Connection con;
 	private PreparedStatement stmt;
     private ResultSet rs;
 	
-	
-	public UsuarioDAO(String usuario, String senha) throws Exception{
-		
-		con = new Conexao().getConnection(usuario, senha);	
-	}
-	
-	public void fechar() throws Exception{
-		con.close();
-	}
-	
 	//INSERT
-	public String gravarUsuario(ClienteBeans obj) throws Exception {
+	public String gravarUsuario(ClienteBeans obj, Connection con) throws Exception {
 		stmt =con.prepareStatement("INSERT INTO T_SPG_USUARIO (CD_USUARIO,NM_NOME, DS_EMAIL, DS_SENHA) VALUES (SEQ_USUARIO.NEXTVAL,?,?,?)");
 	
 		stmt.setString(1, obj.getNmUsuario());
@@ -44,7 +32,7 @@ public class UsuarioDAO {
 	
 	
 	// UPDATE
-	 public String update(String emailAntigo, String emailAtual) throws Exception{
+	 public String update(String emailAntigo, String emailAtual, Connection con) throws Exception{
 			stmt =con.prepareStatement("UPDATE T_SPG_USUARIO SET DS_EMAIL=? WHERE DS_EMAIL=?");
 			stmt.setString(1, emailAtual);
 			stmt.setString(2, emailAntigo);
@@ -56,7 +44,7 @@ public class UsuarioDAO {
 	 }
 	
 	 //APAGAR
-	 public String apagar(int x) throws Exception{
+	 public String apagar(int x, Connection con) throws Exception{
 		 stmt =con.prepareStatement("DELETE T_SPG_USUARIO WHERE CD_USUARIO=?");
 		 stmt.setInt(1, x);
 		 stmt.executeUpdate();
@@ -66,7 +54,7 @@ public class UsuarioDAO {
 	 }
 	 
 	 //CONSULTAR
-	 public UsuarioBeans consultar(int x)throws Exception{
+	 public UsuarioBeans consultar(int x, Connection con)throws Exception{
 		 UsuarioBeans usu = new UsuarioBeans();
 		 stmt =con.prepareStatement("SELECT * FROM T_SPG_USUARIO WHERE CD_USUARIO=?");
 		 stmt.setInt(1, x);
@@ -83,7 +71,7 @@ public class UsuarioDAO {
 		 return usu;
 	 }
 	 //LISTAR
-	 public List<UsuarioBeans> listarUsuario() throws Exception{
+	 public List<UsuarioBeans> listarUsuario(Connection con) throws Exception{
 			List<UsuarioBeans> minhalista = new ArrayList<UsuarioBeans>();
 			UsuarioBeans usu = new UsuarioBeans ();
 			stmt =con.prepareStatement("SELECT * FROM T_SPG_USUARIO"); 
@@ -105,7 +93,7 @@ public class UsuarioDAO {
 	 } 
 	 
 	 //login
-	 public UsuarioBeans logIn(String log, String senha)throws Exception{
+	 public UsuarioBeans logIn(String log, String senha, Connection con)throws Exception{
 			
 			stmt=con.prepareStatement
 					("SELECT DS_EMAIL, DS_SENHA FROM T_SPG_USUARIO WHERE DS_EMAIL=? AND DS_SENHA=?");
@@ -122,7 +110,6 @@ public class UsuarioDAO {
 			
 			stmt.close();
 			rs.close();
-			con.close();
 			
 			return u;
 			

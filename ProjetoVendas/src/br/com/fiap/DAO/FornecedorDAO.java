@@ -8,24 +8,14 @@ import java.util.List;
 
 import br.com.fiap.beans.EnderecoBeans;
 import br.com.fiap.beans.FornecedorBeans;
-import br.com.fiap.conexao.Conexao;
 
 public class FornecedorDAO {
-	
-	private Connection con;
+
 	private PreparedStatement stmt;
 	private ResultSet rs;
 	
-     public FornecedorDAO(String usuario, String senha) throws Exception{
-		
-		con = new Conexao().getConnection(usuario, senha);	
-	}
-	public void fechar()throws Exception {
-		con.close();
-	}
-	
 	//método para cadastro de fornecedores
-	public String cadastrar(FornecedorBeans fb,EnderecoBeans e,String usuario, String senha)throws Exception{
+	public String cadastrar(FornecedorBeans fb,EnderecoBeans e, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("INSERT INTO T_SPG_FORNECEDOR VALUES("
 				+ "SEQ_FORNECEDOR.NEXTVAL,?,?,?,?,?)");
@@ -47,19 +37,19 @@ public class FornecedorDAO {
 		
 		EnderecoDAO dao=null;
 		try{
-			dao=new EnderecoDAO(usuario, senha);
+			dao=new EnderecoDAO();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		
-		dao.novoEndereco(fb.getEmail(), x, e);
+		dao.novoEndereco(fb.getEmail(), x, e, con);
 		
 		return "Fornecedor Cadastrado";
 		
 	}//fim do método
 	
 	//método para listar os fornecedores existentes no sistema
-	public List<FornecedorBeans> consultarNome(String nome)throws Exception{
+	public List<FornecedorBeans> consultarNome(String nome, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_FORNECEDOR WHERE "
 				+ "NM_FORNECEDOR LIKE ?");
@@ -88,7 +78,7 @@ public class FornecedorDAO {
 	}//fim do método
 		
 	//atualizar infos do fornecedor
-	public String atualizarN(int cd,String info)throws Exception{
+	public String atualizarN(int cd,String info, Connection con)throws Exception{
 		//att nome
 		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET NM_FORNECEDOR=? "
 				+ "WHERE CD_FORNECEDOR=?");
@@ -101,7 +91,7 @@ public class FornecedorDAO {
 		return x+" nome atualizado.";
 	}
 	
-	public String atualizarE(int cd,String info)throws Exception{
+	public String atualizarE(int cd,String info, Connection con)throws Exception{
 		//att email
 		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET DS_EMAIL=? "
 				+ "WHERE CD_FORNECEDOR=?");
@@ -114,7 +104,7 @@ public class FornecedorDAO {
 		return x+" email atualizado.";
 	}
 	
-	public String atualizarR(int cd,String info)throws Exception{
+	public String atualizarR(int cd,String info, Connection con)throws Exception{
 		//att razão social
 		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET DS_RAZAO_SOCIAL=? "
 				+ "WHERE CD_FORNECEDOR=?");
@@ -127,7 +117,7 @@ public class FornecedorDAO {
 		return x+" Razão Social atualizada.";
 	}
 	
-	public String atualizarC(int cd, long info)throws Exception{
+	public String atualizarC(int cd, long info, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("UPDATE T_SPG_FORNECEDOR SET NR_CNPJ=? "
 				+ "WHERE CD_FORNECEDOR=?");
@@ -141,7 +131,7 @@ public class FornecedorDAO {
 	}
 	//fim dos métodos de Atualização
 	
-	public String deletar(int cd)throws Exception{
+	public String deletar(int cd, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("DELETE FROM T_SPG_FORNECEDOR WHERE CD_FORNECEDOR=?");
 		stmt.setInt(1, cd);

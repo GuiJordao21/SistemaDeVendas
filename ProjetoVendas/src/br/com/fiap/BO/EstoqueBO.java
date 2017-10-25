@@ -1,5 +1,6 @@
 package br.com.fiap.BO;
 
+import java.sql.Connection;
 import java.util.List;
 
 import br.com.fiap.DAO.EstoqueDAO;
@@ -14,7 +15,7 @@ public class EstoqueBO {
 		return"";
 	}
 	
-	public static String novoEstoque(EstoqueBeans e, String usuario, String senha) throws Exception{
+	public static String novoEstoque(EstoqueBeans e, Connection con) throws Exception{
 		if(e.getEndereco().getCep().length()!=8 || e.getEndereco().getCep() == null) {
 			return "CEP inválido!";
 		}
@@ -26,17 +27,17 @@ public class EstoqueBO {
 				|| e.getDisponibilidade() == null) {
 			return "Disponibilidade inválida!";
 		}
-		String y = new EstoqueDAO(usuario,senha).novoEstoque(e,usuario,senha);
+		String y = new EstoqueDAO().novoEstoque(e,con);
 		return y;
 	}
 	
-	public static String deletaEstoque(int cd, String usuario, String senha) throws Exception{
+	public static String deletaEstoque(int cd, Connection con) throws Exception{
 		validaCodigo(cd);
-		EstoqueDAO dao=new EstoqueDAO(usuario, senha);
-		return dao.deletaEstoque(cd);
+		EstoqueDAO dao=new EstoqueDAO();
+		return dao.deletaEstoque(cd, con);
 	}
 	
-	public static String atualizaEstoque(EstoqueBeans e, String usuario, String senha) throws Exception{
+	public static String atualizaEstoque(EstoqueBeans e, Connection con) throws Exception{
 		if(e.getEndereco().getCep().length()!=9 || e.getEndereco().getCep() == null) {
 			return "CEP inválido!";
 		}
@@ -49,18 +50,18 @@ public class EstoqueBO {
 			return "Disponibilidade inválida!";
 		}
 		
-		EstoqueDAO dao=new EstoqueDAO(usuario, senha);
-		return dao.atualizaEstoque(e);
+		EstoqueDAO dao=new EstoqueDAO();
+		return dao.atualizaEstoque(e, con);
 	}
 	
-	public static EstoqueBeans retornaEstoque(int cd, String usuario, String senha) throws Exception{
+	public static EstoqueBeans retornaEstoque(int cd, Connection con) throws Exception{
 		validaCodigo(cd);
-		EstoqueDAO dao=new EstoqueDAO(usuario, senha);
-		return dao.retornaEstoque(cd);
+		EstoqueDAO dao=new EstoqueDAO();
+		return dao.retornaEstoque(cd, con);
 	}
 	
-	public static List<EstoqueBeans> listarEstoques(String usuario, String senha) throws Exception{
-		EstoqueDAO dao=new EstoqueDAO(usuario, senha);
-		return dao.listarEstoques();	
+	public static List<EstoqueBeans> listarEstoques(Connection con) throws Exception{
+		EstoqueDAO dao=new EstoqueDAO();
+		return dao.listarEstoques(con);	
 	}
 }

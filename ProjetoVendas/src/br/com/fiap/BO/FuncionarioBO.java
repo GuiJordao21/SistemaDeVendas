@@ -1,11 +1,14 @@
 package br.com.fiap.BO;
 
 import br.com.fiap.beans.FuncionarioBeans;
+
+import java.sql.Connection;
+
 import br.com.fiap.DAO.FuncionarioDAO;
 
 public class FuncionarioBO {
 	
-	public static String novoFuncionario(FuncionarioBeans f, String usuario, String senha) throws Exception{
+	public static String novoFuncionario(FuncionarioBeans f, Connection con) throws Exception{
 		if(f.getNmUsuario().length()<3 || f.getNmUsuario().length() > 20 || f.getNmUsuario() == null) {
 			return "Nome de funcionário inválido!";
 		}
@@ -21,11 +24,11 @@ public class FuncionarioBO {
 		if(f.getCpf() == null || f.getCpf().length()!=14) {
 			return "CPF invalido";
 		}
-		new FuncionarioDAO(usuario, senha).novoFuncionario(f);
+		new FuncionarioDAO().novoFuncionario(f, con);
 		return "";
 	}
 	
-	public static String atualizaFuncionario(FuncionarioBeans f, String usuario, String senha) throws Exception{
+	public static String atualizaFuncionario(FuncionarioBeans f, Connection con) throws Exception{
 		if(f.getNmUsuario().length()<3 || f.getNmUsuario().length() > 20 || f.getNmUsuario() == null) {
 			return "Nome de funcionário inválido!";
 		}
@@ -41,7 +44,7 @@ public class FuncionarioBO {
 		if(f.getCpf() == null || f.getCpf().length()!=14) {
 			return "CPF invalido";
 		}
-		new FuncionarioDAO(usuario, senha).atualizaFuncionario(f);
+		new FuncionarioDAO().atualizaFuncionario(f, con);
 		return"";
 	}
 	
@@ -52,15 +55,15 @@ public class FuncionarioBO {
 		return"";
 	}
 	
-	public static String deletaFuncionario(String email, String usuario, String senha) throws Exception {
+	public static String deletaFuncionario(String email, Connection con) throws Exception {
 		validaEmail(email);
-		new FuncionarioDAO(usuario, senha).deletaFuncionario(email);
+		new FuncionarioDAO().deletaFuncionario(email, con);
 		return"";
 	}
 	
-	public static String retornaFuncionario(String email, String usuario, String senha) throws Exception{
+	public static String retornaFuncionario(String email, Connection con) throws Exception{
 		validaEmail(email);
-		new FuncionarioDAO(usuario, senha).retornaFuncionario(email);
+		new FuncionarioDAO().retornaFuncionario(email, con);
 		return"";
 	}
 }

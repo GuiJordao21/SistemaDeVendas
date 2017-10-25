@@ -7,27 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.beans.pedidoMatPrima;
-import br.com.fiap.conexao.Conexao;
 
-public class pedidoMatPrimaDAO {
+public class PedidoMatPrimaDAO {
 
 	PreparedStatement stmt;
-	Connection con;
 	ResultSet rs;
-	
-	public pedidoMatPrimaDAO(String usuario, String senha)throws Exception{
-		
-		con = new Conexao().getConnection(usuario, senha);
-		
-	}
-	
-	public void fechar() throws Exception{
-		
-		con.close();
-	}
-	
+
 	// GRAVAR
-	public String gravarPedido(pedidoMatPrima obj, String email)throws Exception{
+	public String gravarPedido(pedidoMatPrima obj, String email, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL=?");
 		stmt.setString(1, email);
@@ -57,7 +44,7 @@ public class pedidoMatPrimaDAO {
 		
 	}
 	//GRAVAR
-	public String gravarProcessamento(pedidoMatPrima obj, int cdfor, int cdmat,String email, int cdped)throws Exception{
+	public String gravarProcessamento(pedidoMatPrima obj, int cdfor, int cdmat,String email, int cdped, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL=?");
 		stmt.setString(1, email);
@@ -88,7 +75,7 @@ public class pedidoMatPrimaDAO {
 	}
 	
 	//GRAVAR
-	public String gravarFornecida(pedidoMatPrima obj, int cdfor, int cdmat, int cdped)throws Exception{
+	public String gravarFornecida(pedidoMatPrima obj, int cdfor, int cdmat, int cdped, Connection con)throws Exception{
 		stmt=con.prepareStatement("INSERT INTO T_SPG_MAT_PRIMA_FORNECIDA"
 		 		+ "(CD_MATERIA_PRIMA, CD_FORNECEDOR, QT_MATERIA_FORNECIDA, VL_MAT_FORN, CD_PEDIDO) "
 		 		+ "VALUES (?, ?, ?, ?,?)");
@@ -105,11 +92,8 @@ public class pedidoMatPrimaDAO {
 		return "Gravada Materia prima Fornecida";
 	}
 	
-	
-	
-	
 	//UPDATE PEDIDO
-	public String atualizaPedido(pedidoMatPrima obj, int num)throws Exception{
+	public String atualizaPedido(pedidoMatPrima obj, int num, Connection con)throws Exception{
 		stmt=con.prepareStatement("UPDATE T_SPG_PEDIDO_MATERIA_PRIMA SET QT_PEDIDO=?, DS_PEDIDO=? WHERE CD_PEDIDO=?");
 		stmt.setInt(1, obj.getQtPedidos());
 		stmt.setString(2, obj.getDescricao());
@@ -119,7 +103,8 @@ public class pedidoMatPrimaDAO {
 		return "Pedido Atualizado";
 	}
 	//UPDATE PED PROCESSADO
-	public String atualizaProcessamento(pedidoMatPrima obj, int num)throws Exception{
+	
+	public String atualizaProcessamento(pedidoMatPrima obj, int num, Connection con)throws Exception{
 		stmt=con.prepareStatement("UPDATE T_SPG_MAT_SOLICITADA SET QT_COMPRADA=?,  VL_MAT_SOLICITADA=? WHERE CD_PEDIDO=?");
 		stmt.setDouble(1, obj.getQuantProcessada());
 		stmt.setDouble(2, obj.getVlMatProcessada());
@@ -128,8 +113,9 @@ public class pedidoMatPrimaDAO {
 		stmt.close();
 		return "Pedido Atualizado";
 	}
+	
 	//UPDATE PED FORNECIDO
-	public String atualizaFornercida(pedidoMatPrima obj, int num)throws Exception{
+	public String atualizaFornercida(pedidoMatPrima obj, int num, Connection con)throws Exception{
 		stmt=con.prepareStatement("UPDATE T_SPG_MAT_PRIMA_FORNECIDA SET QT_MATERIA_FORNECIDA=?,  VL_MAT_FORN=? WHERE CD_PEDIDO=?");
 		stmt.setDouble(1, obj.getQuantFornecida());
 		stmt.setDouble(2, obj.getVlMatFornecida());
@@ -143,97 +129,95 @@ public class pedidoMatPrimaDAO {
 	
 	
 	//DELETAR PEDIDO
-	public String deletaPedido(int n)throws Exception{
+	public String deletaPedido(int n, Connection con)throws Exception{
 		stmt=con.prepareStatement("DELETE * FROM T_SPG_PEDIDO_MATERIA_PRIMA WHERE CD_PEDIDO=?");
 		stmt.setInt(1, n);
 		stmt.executeUpdate();
 		stmt.close();
 		return "Pedido Excluído";
 	}
+	
 	//DELETAR PED PROCESSAMENTO
-		public String deletaProcessamento(int n)throws Exception{
+	public String deletaProcessamento(int n, Connection con)throws Exception{
 		stmt=con.prepareStatement("DELETE * FROM T_SPG_MAT_SOLICITADA WHERE CD_PEDIDO=?");
 		stmt.setInt(1, n);
 		stmt.executeUpdate();
 		stmt.close();
-		return "Pedido Excluído";
-		}
+	return "Pedido Excluído";
+	}
 		
     // DELETAR PED FORNECIDO
-		public String deletaFornecida(int n)throws Exception{
+	public String deletaFornecida(int n, Connection con)throws Exception{
 		stmt=con.prepareStatement("DELETE * FROM T_SPG_MAT_PRIMA_FORNECIDA WHERE CD_PEDIDO=?");
 		stmt.setInt(1, n);
 		stmt.executeUpdate();
 		stmt.close();
-		return "Pedido Excluído";
-	}
-		
-		
-		
+	return "Pedido Excluído";
+	}		
 	
 	// Pesquisar
 		
-		public pedidoMatPrima pesquisa(int n)throws Exception{
-			pedidoMatPrima prod = new pedidoMatPrima();
-		    stmt=con.prepareStatement("SELECT * FROM T_SPG_PEDIDO_MATERIA_PRIMA WHERE CD_PEDIDO=?");
-		    stmt.setInt(1, n);
-		    rs=stmt.executeQuery();
-		    if (rs.next()) {
-		    	prod.setQtPedidos(rs.getInt("QT_PEDIDO"));
-		    	prod.setDescricao(rs.getString("DS_PEDIDO"));
-		    	prod.setDatapedido(rs.getString("DT_PEDIDO"));
-		    	prod.setHorapedido(rs.getString("HR_PEDIDO"));
-		    }
-		    stmt=con.prepareStatement("SELECT * FROM T_SPG_MAT_SOLICITADA WHERE CD_PEDIDO=?");
-		    stmt.setInt(1, n);
-		    rs=stmt.executeQuery();
-		    if (rs.next()) {
-		    	prod.setDataProcessamento(rs.getString("DT_SOLICITACAO"));
-		    	prod.setHoraProcessamento(rs.getString("HR_SOLICITACAO"));
-		    	prod.setQuantProcessada(rs.getDouble("QT_COMPRADA"));
-		    	prod.setVlMatProcessada(rs.getDouble("VL_MAT_SOLICITADA"));
-		    }
-		    stmt=con.prepareStatement("SELECT * FROM T_SPG_MAT_PRIMA_FORNECIDA WHERE CD_PEDIDO=?");
-		    stmt.setInt(1, n);
-		    rs=stmt.executeQuery();
-		    if (rs.next()) {
-		    	prod.setQuantFornecida(rs.getDouble("QT_MATERIA_FORNECIDA"));
-		    	prod.setVlMatFornecida(rs.getDouble("VL_MAT_FORN"));
-		    }
-		    
-			return prod;
-		}
+	public pedidoMatPrima pesquisa(int n, Connection con)throws Exception{
+		pedidoMatPrima prod = new pedidoMatPrima();
+	    stmt=con.prepareStatement("SELECT * FROM T_SPG_PEDIDO_MATERIA_PRIMA WHERE CD_PEDIDO=?");
+	    stmt.setInt(1, n);
+	    rs=stmt.executeQuery();
+	    if (rs.next()) {
+	    	prod.setQtPedidos(rs.getInt("QT_PEDIDO"));
+	    	prod.setDescricao(rs.getString("DS_PEDIDO"));
+	    	prod.setDatapedido(rs.getString("DT_PEDIDO"));
+	    	prod.setHorapedido(rs.getString("HR_PEDIDO"));
+	    }
+	    stmt=con.prepareStatement("SELECT * FROM T_SPG_MAT_SOLICITADA WHERE CD_PEDIDO=?");
+	    stmt.setInt(1, n);
+	    rs=stmt.executeQuery();
+	    if (rs.next()) {
+	    	prod.setDataProcessamento(rs.getString("DT_SOLICITACAO"));
+	    	prod.setHoraProcessamento(rs.getString("HR_SOLICITACAO"));
+	    	prod.setQuantProcessada(rs.getDouble("QT_COMPRADA"));
+	    	prod.setVlMatProcessada(rs.getDouble("VL_MAT_SOLICITADA"));
+	    }
+	    stmt=con.prepareStatement("SELECT * FROM T_SPG_MAT_PRIMA_FORNECIDA WHERE CD_PEDIDO=?");
+	    stmt.setInt(1, n);
+	    rs=stmt.executeQuery();
+	    if (rs.next()) {
+	    	prod.setQuantFornecida(rs.getDouble("QT_MATERIA_FORNECIDA"));
+	    	prod.setVlMatFornecida(rs.getDouble("VL_MAT_FORN"));
+	    }
+	    
+		return prod;
+	}
 		
-		public List<pedidoMatPrima> listar()throws Exception{
-			pedidoMatPrima prod = new pedidoMatPrima();
-			List<pedidoMatPrima> minhalista = new ArrayList<pedidoMatPrima>();
-			stmt=con.prepareStatement("SELECT A.CD_USUARIO, A.CD_PEDIDO, A.QT_PEDIDO, A.DT_PEDIDO, A.HR_PEDIDO, A.DS_PEDIDO, A.CD_ORDEM,"
-					                      + "B.CD_MATERIA_PRIMA, B.CD_USUARIO, B.CD_FORNECEDOR, B.QT_COMPRADA, B.DT_SOLICITACAO, B.HR_SOLICITACAO, B.VL_MAT_SOLICITADA, B.CD_PEDIDO,"
-					                      + "C.CD_MATERIA_PRIMA, C.CD_FORNECEDOR, C.QT_MATERIA_FORNECIDA, C.VL_MAT_FORN, C.CD_PEDIDO "
-					                      + "FROM T_SPG_PEDIDO_MATERIA_PRIMA A, T_SPG_MAT_SOLICITADA B, T_SPG_MAT_PRIMA_FORNECIDA C WHERE "
-					                      + "A.CD_PEDIDO=B.CD_PEDIDO AND B.CD_PEDIDO=C.CD_PEDIDO");
-			rs=stmt.executeQuery();
+	public List<pedidoMatPrima> listar(Connection con)throws Exception{
+		pedidoMatPrima prod = new pedidoMatPrima();
+		List<pedidoMatPrima> minhalista = new ArrayList<pedidoMatPrima>();
+		stmt=con.prepareStatement("SELECT A.CD_USUARIO, A.CD_PEDIDO, A.QT_PEDIDO, A.DT_PEDIDO, A.HR_PEDIDO, A.DS_PEDIDO, A.CD_ORDEM,"
+				                      + "B.CD_MATERIA_PRIMA, B.CD_USUARIO, B.CD_FORNECEDOR, B.QT_COMPRADA, B.DT_SOLICITACAO, B.HR_SOLICITACAO, B.VL_MAT_SOLICITADA, B.CD_PEDIDO,"
+				                      + "C.CD_MATERIA_PRIMA, C.CD_FORNECEDOR, C.QT_MATERIA_FORNECIDA, C.VL_MAT_FORN, C.CD_PEDIDO "
+				                      + "FROM T_SPG_PEDIDO_MATERIA_PRIMA A, T_SPG_MAT_SOLICITADA B, T_SPG_MAT_PRIMA_FORNECIDA C WHERE "
+				                      + "A.CD_PEDIDO=B.CD_PEDIDO AND B.CD_PEDIDO=C.CD_PEDIDO");
+		rs=stmt.executeQuery();
+		
+		while (rs.next()) {
+			prod= new pedidoMatPrima();
+	    	prod.setDescricao(rs.getString("DS_PEDIDO"));
+	    	prod.setDatapedido(rs.getString("DT_PEDIDO"));
+	    	prod.setHorapedido(rs.getString("HR_PEDIDO"));
+	    	
+	    	prod.setDataProcessamento(rs.getString("DT_SOLICITACAO"));
+	    	prod.setHoraProcessamento(rs.getString("HR_SOLICITACAO"));
+	    	prod.setQuantProcessada(rs.getDouble("QT_COMPRADA"));
+	    	prod.setVlMatProcessada(rs.getDouble("VL_MAT_SOLICITADA"));
+	    	
+	    	prod.setQuantFornecida(rs.getDouble("QT_MATERIA_FORNECIDA"));
+	    	prod.setVlMatFornecida(rs.getDouble("VL_MAT_FORN"));
+	    	
+	    	minhalista.add(prod);
 			
-			while (rs.next()) {
-				prod= new pedidoMatPrima();
-		    	prod.setDescricao(rs.getString("DS_PEDIDO"));
-		    	prod.setDatapedido(rs.getString("DT_PEDIDO"));
-		    	prod.setHorapedido(rs.getString("HR_PEDIDO"));
-		    	
-		    	prod.setDataProcessamento(rs.getString("DT_SOLICITACAO"));
-		    	prod.setHoraProcessamento(rs.getString("HR_SOLICITACAO"));
-		    	prod.setQuantProcessada(rs.getDouble("QT_COMPRADA"));
-		    	prod.setVlMatProcessada(rs.getDouble("VL_MAT_SOLICITADA"));
-		    	
-		    	prod.setQuantFornecida(rs.getDouble("QT_MATERIA_FORNECIDA"));
-		    	prod.setVlMatFornecida(rs.getDouble("VL_MAT_FORN"));
-		    	
-		    	minhalista.add(prod);
-				
-			}
-			stmt.close();
-			return minhalista;		
 		}
+		stmt.close();
+		return minhalista;		
+	}
 		
 		
 }

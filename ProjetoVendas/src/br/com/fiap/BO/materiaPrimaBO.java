@@ -1,5 +1,7 @@
 package br.com.fiap.BO;
 
+import java.sql.Connection;
+
 import br.com.fiap.DAO.materiaPrimaDAO;
 import br.com.fiap.beans.materiaPrima;
 
@@ -12,7 +14,7 @@ public class materiaPrimaBO {
 		return"";
 	}
 
-	public static String Gravar(materiaPrima m, String usuario, String senha) throws Exception{
+	public static String Gravar(materiaPrima m, Connection con) throws Exception{
 		if(m.getCdMatPrima()<0 || m.getCdMatPrima()>9999) {
 			return "Codigo inválido!";
 		}
@@ -25,19 +27,17 @@ public class materiaPrimaBO {
 		if(m.getUnidMedida().length()==0 || m.getUnidMedida().length()>20 ||  m.getUnidMedida() == null) {
 			return "Unidade de medida inválida!";
 		}
-		new materiaPrimaDAO(usuario, senha).Gravar(m);
-		new materiaPrimaDAO(usuario, senha).fechar();
+		new materiaPrimaDAO().Gravar(m, con);
 		return "";
 	}
 
-	public static String apagar(int cd, String usuario, String senha) throws Exception{
+	public static String apagar(int cd, Connection con) throws Exception{
 		validaCodigo(cd);
-		new materiaPrimaDAO(usuario, senha).apagar(cd);
-		new materiaPrimaDAO(usuario, senha).fechar();
+		new materiaPrimaDAO().apagar(cd, con);
 		return"";
 	}
 
-	public static String atualizarMatP(int cd, materiaPrima m, String usuario, String senha)throws Exception{
+	public static String atualizarMatP(int cd, materiaPrima m, Connection con)throws Exception{
 		validaCodigo(cd);
 		if(m.getDescricao().length()<3 || m.getDescricao().length()>20 || m.getDescricao() == null){
 			return "Descrição inválida!";
@@ -48,21 +48,18 @@ public class materiaPrimaBO {
 		if(m.getUnidMedida().length()==0 || m.getUnidMedida().length()>20 ||  m.getUnidMedida() == null) {
 			return "Unidade de medida inválida!";
 		}
-		new materiaPrimaDAO(usuario, senha).atualizarMatP(cd, m);
-		new materiaPrimaDAO(usuario, senha).fechar();
+		new materiaPrimaDAO().atualizarMatP(cd, m, con);
 		return"";
 	}
 	
-	public static String pesquisa(int cd, String usuario, String senha) throws Exception{
+	public static String pesquisa(int cd, Connection con) throws Exception{
 		validaCodigo(cd);
-		new materiaPrimaDAO(usuario, senha).pesquisa(cd);
-		new materiaPrimaDAO(usuario, senha).fechar();
+		new materiaPrimaDAO().pesquisa(cd, con);
 		return"";
 	}
 	
-	public static String listaMat(String usuario, String senha) throws Exception{
-		new materiaPrimaDAO(usuario, senha).listaMat();
-		new materiaPrimaDAO(usuario, senha).fechar();
+	public static String listaMat(Connection con) throws Exception{
+		new materiaPrimaDAO().listaMat(con);
 		return"";
 	}
 	

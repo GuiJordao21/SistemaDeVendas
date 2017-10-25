@@ -1,6 +1,8 @@
 package br.com.fiap.BO;
 
-import br.com.fiap.DAO.pedidoMatPrimaDAO;
+import java.sql.Connection;
+
+import br.com.fiap.DAO.PedidoMatPrimaDAO;
 import br.com.fiap.beans.pedidoMatPrima;
 
 public class pedidoMatPrimaBO {
@@ -12,7 +14,7 @@ public class pedidoMatPrimaBO {
 		return"";
 	}
 
-	public static String gravarPedido(pedidoMatPrima m, String email, String usuario, String senha)throws Exception{
+	public static String gravarPedido(pedidoMatPrima m, String email, Connection con)throws Exception{
 		if((email.indexOf('@') !=1) || (email.indexOf('.') == 0)) {
 			return "Email inválido!";
 		}
@@ -29,12 +31,11 @@ public class pedidoMatPrimaBO {
 			return "Descrição Inválida!";
 		}
 		
-		new pedidoMatPrimaDAO(usuario, senha).gravarPedido(m, email);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().gravarPedido(m, email, con);
 		return "Materia Prima Cadastrada";
 	}
 
-	public String gravarProcessamento(pedidoMatPrima m, int cdfor, int cdmat,String email, int cdped, String usuario, String senha)throws Exception{
+	public String gravarProcessamento(pedidoMatPrima m, int cdfor, int cdmat,String email, int cdped, Connection con)throws Exception{
 		validaCodigo(cdfor);
 		validaCodigo(cdmat);
 		validaCodigo(cdped);
@@ -53,12 +54,11 @@ public class pedidoMatPrimaBO {
 		if(m.getVlMatProcessada()<0.0 || m.getVlMatProcessada()>999999) {
 			return "Valor invalido";
 		}
-		new pedidoMatPrimaDAO(usuario, senha).gravarProcessamento(m, cdfor, cdmat, email, cdped);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().gravarProcessamento(m, cdfor, cdmat, email, cdped, con);
 		return"";
 	}
 
-	public String gravarFornecida(pedidoMatPrima m, int cdfor, int cdmat, int cdped, String usuario, String senha)throws Exception{
+	public String gravarFornecida(pedidoMatPrima m, int cdfor, int cdmat, int cdped, Connection con)throws Exception{
 		validaCodigo(cdfor);
 		validaCodigo(cdmat);
 		validaCodigo(cdped);
@@ -68,12 +68,11 @@ public class pedidoMatPrimaBO {
 		if(m.getVlMatFornecida()<0.0 || m.getVlMatFornecida() > 999999){
 			return "Valor quantidade fornecida invalida!";
 		}
-		new pedidoMatPrimaDAO(usuario, senha).gravarFornecida(m, cdfor, cdmat, cdped);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().gravarFornecida(m, cdfor, cdmat, cdped, con);
 		return"";
 	}
 
-	public String atualizaPedido(pedidoMatPrima m, int num, String usuario, String senha)throws Exception{
+	public String atualizaPedido(pedidoMatPrima m, int num, Connection con)throws Exception{
 		validaCodigo(num);
 		if(m.getQtPedidos() <0 || m.getQtPedidos() > 999999) {
 			return "Quantidade de pedido inválida!";
@@ -81,12 +80,11 @@ public class pedidoMatPrimaBO {
 		if(m.getDescricao().length() <3 || m.getDescricao().length() >20 || m.getDescricao() == null) {
 			return "Descrição Inválida!";
 		}
-		new pedidoMatPrimaDAO(usuario, senha).atualizaPedido(m, num);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().atualizaPedido(m, num, con);
 		return"";
 	}
 
-	public static String atualizaProcessamento(pedidoMatPrima m, int num, String usuario, String senha)throws Exception{
+	public static String atualizaProcessamento(pedidoMatPrima m, int num, Connection con)throws Exception{
 		validaCodigo(num);
 		if(m.getQuantProcessada() <0 || m.getQuantProcessada() > 999999) {
 			return "Quantidade de pedido inválida!";
@@ -94,12 +92,11 @@ public class pedidoMatPrimaBO {
 		if(m.getVlMatProcessada()<0.0 || m.getVlMatProcessada()>999999) {
 			return "Valor invalido";
 		}
-		new pedidoMatPrimaDAO(usuario, senha).atualizaProcessamento(m, num);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().atualizaProcessamento(m, num, con);
 		return"";
 	}
 
-	public String atualizaFornercida(pedidoMatPrima m, int num, String usuario, String senha)throws Exception{
+	public String atualizaFornercida(pedidoMatPrima m, int num, Connection con)throws Exception{
 		validaCodigo(num);
 		if(m.getQuantFornecida() <0 || m.getQuantFornecida()>999999) {
 			return "Quantidade fornecida inválida!";
@@ -107,42 +104,36 @@ public class pedidoMatPrimaBO {
 		if(m.getVlMatFornecida()<0.0 || m.getVlMatFornecida() > 999999){
 			return "Valor quantidade fornecida invalida!";
 		}
-		new pedidoMatPrimaDAO(usuario, senha).atualizaFornercida(m, num);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().atualizaFornercida(m, num, con);
 		return"";
 	}
 	
-	public static String deletaPedido(int n, String usuario, String senha)throws Exception{
+	public static String deletaPedido(int n, Connection con)throws Exception{
 		validaCodigo(n);
-		new pedidoMatPrimaDAO(usuario, senha).deletaPedido(n);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().deletaPedido(n, con);
 		return "";
 	}
 	
-	public static String deletaProcessamento(int n, String usuario, String senha)throws Exception{
+	public static String deletaProcessamento(int n, Connection con)throws Exception{
 		validaCodigo(n);
-		new pedidoMatPrimaDAO(usuario, senha).deletaProcessamento(n);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().deletaProcessamento(n, con);
 		return"";
 	}
 	
-	public static String deletaFornecida(int n, String usuario, String senha)throws Exception{
+	public static String deletaFornecida(int n, Connection con)throws Exception{
 		validaCodigo(n);
-		new pedidoMatPrimaDAO(usuario, senha).deletaProcessamento(n);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().deletaFornecida(n, con);
 		return"";
 	}
 	
-	public static String pesquisa(int n, String usuario, String senha)throws Exception{
+	public static String pesquisa(int n, Connection con)throws Exception{
 		validaCodigo(n);
-		new pedidoMatPrimaDAO(usuario, senha).pesquisa(n);
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+		new PedidoMatPrimaDAO().pesquisa(n,con);
 		return "";
 	}
 	
-	public static String listar(String usuario, String senha)throws Exception{
-		new pedidoMatPrimaDAO(usuario, senha).listar();
-		new pedidoMatPrimaDAO(usuario, senha).fechar();
+	public static String listar(Connection con)throws Exception{
+		new PedidoMatPrimaDAO().listar(con);
 		return "";
 	}
 	

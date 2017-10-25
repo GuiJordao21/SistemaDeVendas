@@ -7,24 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.fiap.conexao.Conexao;
 import br.com.fiap.beans.FuncionarioBeans;
 
 public class FuncionarioDAO {
-	Connection con = null;
+
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	FuncionarioBeans f = null;
-
-	public FuncionarioDAO(String usuario,String senha) throws Exception{
-		con = new Conexao().getConnection(usuario,senha);
-	}
-
-	public void fechar() throws SQLException{
-		con.close();
-	}
-
-	public String novoFuncionario(FuncionarioBeans f) throws SQLException{
+	
+	public String novoFuncionario(FuncionarioBeans f, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_USUARIO"
 						+ "(CD_USUARIO, NM_NOME,DS_EMAIL,DS_SENHA)"
@@ -64,7 +55,7 @@ public class FuncionarioDAO {
 		return l + " Funcionario Cadastrado!";
 	}
 
-	public String atualizaFuncionario(FuncionarioBeans f) throws SQLException{
+	public String atualizaFuncionario(FuncionarioBeans f, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"UPDATE T_SPG_USUARIO"
 						+ "SET NM_NOME = ?, DS_EMAIL = ?, DS_SENHA = ?");
@@ -82,7 +73,7 @@ public class FuncionarioDAO {
 		return l + " Funcionario Atualizado!";
 	}
 
-	public String deletaFuncionario(String email)throws SQLException {
+	public String deletaFuncionario(String email, Connection con)throws SQLException {
 		stmt = con.prepareStatement(
 				"SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL = ? ");
 		stmt.setString(1, email);
@@ -104,7 +95,7 @@ public class FuncionarioDAO {
 		return l + "Funcionario Deletado!";
 	}
 
-	public FuncionarioBeans retornaFuncionario(String email) throws SQLException{
+	public FuncionarioBeans retornaFuncionario(String email, Connection con) throws SQLException{
 		f = new FuncionarioBeans();
 
 		stmt = con.prepareStatement(
@@ -129,7 +120,7 @@ public class FuncionarioDAO {
 		return f;
 	}
 
-	public List<FuncionarioBeans> listarFuncionarios() throws SQLException{
+	public List<FuncionarioBeans> listarFuncionarios(Connection con) throws SQLException{
 		List<FuncionarioBeans> listaFuncionario = new ArrayList<>();
 		
 		stmt = con.prepareStatement("SELECT * FROM T_SPG_USUARIO");

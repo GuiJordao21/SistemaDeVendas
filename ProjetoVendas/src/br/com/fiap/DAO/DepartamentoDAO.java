@@ -7,24 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.fiap.conexao.Conexao;
 import br.com.fiap.beans.DepartamentoBeans;
 
 public class DepartamentoDAO {
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
-	Connection con = null;
 	DepartamentoBeans d = null;
 	
-	public DepartamentoDAO(String usuario,String senha) throws Exception{
-		con = new Conexao().getConnection(usuario,senha);
-	}
-	
-	public void fechar() throws SQLException{
-		con.close();
-	}
-	
-	public String cadastraDepartamento(DepartamentoBeans d) throws SQLException{
+	public String cadastraDepartamento(DepartamentoBeans d, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_DEPARTAMENTO"
 				+ "(CD_DEPARTAMENTO, DS_DEPARTAMENTO,QT_FUNCIONARIOS)"
@@ -35,7 +25,7 @@ public class DepartamentoDAO {
 		return l + "Departamento cadastrado!";
 	}
 	
-	public DepartamentoBeans consultaDepartamento(String nome) throws SQLException{
+	public DepartamentoBeans consultaDepartamento(String nome, Connection con) throws SQLException{
 		d = new DepartamentoBeans();
 		stmt = con.prepareStatement(
 				"SELECT * FROM T_SPG_DEPARTAMENTO WHERE DS_DEPARTAMENTO = ?");
@@ -48,7 +38,7 @@ public class DepartamentoDAO {
 		return d;
 	}
 	
-	public String deletaDepartamento(String desc) throws SQLException{
+	public String deletaDepartamento(String desc, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"DELETE * FROM T_SPG_DEPARTAMENTO WHERE DS_DEPARTAMENTO = ?");
 		stmt.setString(1, desc);
@@ -56,7 +46,7 @@ public class DepartamentoDAO {
 		return l + "Telefone deletado";
 	}
 	
-	public String atualizaDepartamento(DepartamentoBeans d) throws SQLException{
+	public String atualizaDepartamento(DepartamentoBeans d, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"UPDATE T_SPG_DEPARTAMENTO"
 				+ " SET DS_DEPARTAMENTO = ?,QT_FUNCIONARIOS = ?");
@@ -66,7 +56,7 @@ public class DepartamentoDAO {
 		return l + "Telefone atualizado!";
 	}
 	
-	public List<DepartamentoBeans> listarDepartamento() throws SQLException{
+	public List<DepartamentoBeans> listarDepartamento(Connection con) throws SQLException{
 		stmt = con.prepareStatement("SELECT * FROM T_SPG_DEPARTAMENTO");
 		rs = stmt.executeQuery();
 		List<DepartamentoBeans> listaDepto = new ArrayList<>();

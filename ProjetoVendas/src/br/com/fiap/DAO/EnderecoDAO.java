@@ -6,24 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import br.com.fiap.beans.EnderecoBeans;
-import br.com.fiap.conexao.Conexao;
 
 public class EnderecoDAO {
-	Connection con= null;
+
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
-	
-	public EnderecoDAO(String usuario,String senha) throws Exception{
-		con = new Conexao().getConnection(usuario,senha);
-	}
-	
-	public void fechar() throws SQLException{
-		con.close();
-	}
-	
-	
+
 	//endereço do usuario
-	public String novoEndereco(int cdU, EnderecoBeans e) throws SQLException{
+	public String novoEndereco(int cdU, EnderecoBeans e, Connection con) throws SQLException{
 		
 		stmt = con.prepareStatement(
 				"SELECT CD_ESTADO FROM T_SPG_ESTADO WHERE NM_ESTADO = ?");
@@ -106,7 +96,7 @@ public class EnderecoDAO {
 		return "Endereço do usuario cadastrado com sucesso";		
 	}//esse método grava o endereço de um usuario
 	
-	public String novoEndereco(EnderecoBeans e) throws SQLException{
+	public String novoEndereco(EnderecoBeans e, Connection con) throws SQLException{
 		
 		stmt = con.prepareStatement(
 				"SELECT CD_ESTADO FROM T_SPG_ESTADO WHERE NM_ESTADO = ?");
@@ -190,7 +180,7 @@ public class EnderecoDAO {
 	
 	
 	//começa o método para cadastrar endereço do fornecedor
-	public String novoEndereco(String email, int cdf, EnderecoBeans e) throws SQLException{
+	public String novoEndereco(String email, int cdf, EnderecoBeans e, Connection con) throws SQLException{
 		
 		stmt = con.prepareStatement(
 				"SELECT CD_ESTADO FROM T_SPG_ESTADO WHERE NM_ESTADO = ?");

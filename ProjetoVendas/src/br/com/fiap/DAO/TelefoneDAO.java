@@ -8,23 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.beans.TelefoneBeans;
-import br.com.fiap.conexao.Conexao;
 
 public class TelefoneDAO {
-	Connection con = null;
+
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	TelefoneBeans t = null;
-	
-	public TelefoneDAO(String usuario, String senha) throws Exception{
-		con = new Conexao().getConnection(usuario,senha);
-	}
-	
-	public void fechar() throws SQLException{
-		con.close();
-	}
-	
-	public String novoTelefone(int ex, TelefoneBeans t) throws SQLException {
+
+	public String novoTelefone(int ex, TelefoneBeans t, Connection con) throws SQLException {
 		stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_TELEFONE"
 				+ "(CD_FONE, CD_TIPO_FONE,NR_DDD,NR_TELEFONE)"
@@ -57,7 +48,7 @@ public class TelefoneDAO {
 		return "Um telefone cadastrado!";
 	}
 	
-	public String deletaTelefone(String email) throws SQLException{
+	public String deletaTelefone(String email, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL = ?");
 		stmt.setString(1, email);
@@ -89,7 +80,7 @@ public class TelefoneDAO {
 		return l + " Telefone Deletado!";
 	}
 	
-	public String atualizaTelefone(TelefoneBeans t, String email) throws SQLException{
+	public String atualizaTelefone(TelefoneBeans t, String email, Connection con) throws SQLException{
 		stmt = con.prepareStatement("UPDATE T_SPG_TELEFONE SET "
 				+ " CD_TIPO_FONE = ? ,NR_DDD = ?,NR_TELEFONE = ?");
 		stmt.setInt(1, t.getTipoFone());
@@ -104,7 +95,7 @@ public class TelefoneDAO {
 		return l + " Telefone Atualizado!";
 	}
 	
-	public List<TelefoneBeans> listaTelefone(String email) throws SQLException{
+	public List<TelefoneBeans> listaTelefone(String email, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL = ?");
 		stmt.setString(1, email);

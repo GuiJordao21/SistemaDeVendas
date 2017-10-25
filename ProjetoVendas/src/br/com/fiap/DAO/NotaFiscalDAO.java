@@ -7,25 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.beans.NotaFiscalBeans;
-import br.com.fiap.conexao.Conexao;
 
 public class NotaFiscalDAO {
-	
-	private Connection con;
+
 	private PreparedStatement stmt;
 	private ResultSet rs;
-	
-    public NotaFiscalDAO(String usuario, String senha) throws Exception{
-		
-		con = new Conexao().getConnection(usuario, senha);	
-	}
-	
-	public void fechar()throws Exception{
-		con.close();
-	}
-	
+
 	//esse método cria uma NF no banco de dados, para ser atualizada com os valores dos itens venda
-	public int cadastrar(String op,String data)throws Exception {
+	public int cadastrar(String op,String data, Connection con)throws Exception {
 				
 		stmt=con.prepareStatement("SELECT CD_CLASSIFICACAO FROM T_SPG_CLASS_FISCAL WHERE DS_NATUREZA_OP=?");
 		stmt.setString(1, op);
@@ -64,7 +53,7 @@ public class NotaFiscalDAO {
 	}//fim do método
 	
 	//Esse método retorna uma lista com as notas fiscais
-	public List<NotaFiscalBeans> consultar()throws Exception{
+	public List<NotaFiscalBeans> consultar(Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_NOTA_FISCAL");
 		rs=stmt.executeQuery();
@@ -93,7 +82,7 @@ public class NotaFiscalDAO {
 	}//fim método
 	
 	//atualiza o valor total da nota fiscal
-	public String attValor(int cdv, int cd)throws Exception{
+	public String attValor(int cdv, int cd, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT VL_TOTAL_ITEM FROM T_SPG_ITEM_VENDA WHERE CD_VENDA=?");
 		stmt.setInt(1, cdv);
@@ -115,7 +104,7 @@ public class NotaFiscalDAO {
 		
 	}//fim do método
 	
-	public String apagar(int cdnf)throws Exception{
+	public String apagar(int cdnf, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("DELETE FROM T_SPG_NOTA_FISCAL WHERE CD_NF=?");
 		stmt.setInt(1, cdnf);

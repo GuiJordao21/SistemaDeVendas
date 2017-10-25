@@ -8,26 +8,14 @@ import java.util.List;
 
 import br.com.fiap.beans.ItemVendaBeans;
 import br.com.fiap.beans.ProdutoBeans;
-import br.com.fiap.conexao.Conexao;
 
 public class ItemVendaDAO {
-	
-	private Connection con;
+
 	private PreparedStatement stmt;
 	private ResultSet rs;
 	
-     public ItemVendaDAO(String usuario, String senha) throws Exception{
-		
-		con = new Conexao().getConnection(usuario,senha);	
-	}
-	
-	
-	public void fechar()throws Exception {
-		con.close();
-	}
-	
 	//adiciona um item ao item venda
-	public String adicionar(int x, int cdv, int qtd)throws Exception{
+	public String adicionar(int x, int cdv, int qtd, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_PRODUTO WHERE CD_PRODUTO=?");
 		stmt.setInt(1, x);
@@ -51,7 +39,7 @@ public class ItemVendaDAO {
 	}//fim método
 	
 	//deletar item venda
-	public String deletar(int cd)throws Exception{
+	public String deletar(int cd, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("DELETE FROM T_SPG_ITEM_VENDA WHERE CD_ITEM=?");
 		stmt.setInt(1, cd);
@@ -64,7 +52,7 @@ public class ItemVendaDAO {
 		
 	}//fim método
 	
-	public String deletarVenda(int cd)throws Exception{
+	public String deletarVenda(int cd, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("DELETE FROM T_SPG_ITEM_VENDA WHERE CD_VENDA=?");
 		stmt.setInt(1, cd);
@@ -78,7 +66,7 @@ public class ItemVendaDAO {
 	}
 	
 	//atualiza valor do item
-	public String attItem(int cd, double vl)throws Exception{
+	public String attItem(int cd, double vl, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_ITEM_VENDA WHERE CD_ITEM=?");
 		stmt.setInt(1, cd);
@@ -104,7 +92,7 @@ public class ItemVendaDAO {
 		
 	}//fim do método
 	
-	public List<ItemVendaBeans> consultar(int cd)throws Exception{
+	public List<ItemVendaBeans> consultar(int cd, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_ITEM_VENDA WHERE CD_VENDA=?");
 		stmt.setInt(1, cd);
@@ -132,7 +120,7 @@ public class ItemVendaDAO {
 		
 	}
 	
-	private List<ProdutoBeans> listaTudo()throws Exception{
+	private List<ProdutoBeans> listaTudo(Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT * FROM T_SPG_PRODUTO");
 		rs=stmt.executeQuery();
@@ -156,11 +144,11 @@ public class ItemVendaDAO {
 		return lista;
 	}
 	
-	public List<ItemVendaBeans> consultMaiorVal(String usuario, String senha)throws Exception{
+	public List<ItemVendaBeans> consultMaiorVal(Connection con)throws Exception{
 		
-		ItemVendaDAO dao=new ItemVendaDAO(usuario, senha);
+		ItemVendaDAO dao=new ItemVendaDAO();
 		
-		List<ProdutoBeans> controle=dao.listaTudo();
+		List<ProdutoBeans> controle=dao.listaTudo(con);
 		
 		List<ItemVendaBeans> lista=new ArrayList<>();
 		ItemVendaBeans item=null;

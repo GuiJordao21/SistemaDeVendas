@@ -8,24 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.beans.ProdutoBeans;
-import br.com.fiap.conexao.Conexao;
 
 
 public class ProdutoDAO {
 
-	private Connection con = null;
 	private PreparedStatement stmt = null;
 	private ResultSet rs=null;
 	
-	public ProdutoDAO(String usuario, String senha) throws Exception{		 
-		con = new Conexao().getConnection(usuario, senha);
-	}
-	
-	public void fechar()throws Exception{
-		con.close();
-	}
-	
-	public String novoProduto(ProdutoBeans p) throws SQLException{
+	public String novoProduto(ProdutoBeans p, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_PRODUTO"
 				+ "(CD_PRODUTO,DS_PRODUTO,VL_PRECO_UNITARIO,DS_DISPONIBILIDADE,NM_PRODUTO,DS_URL)"
@@ -40,7 +30,7 @@ public class ProdutoDAO {
 		return l + " Produto Cadastrado!";
 	}
 	
-	public String deletaProduto(int n) throws SQLException{
+	public String deletaProduto(int n, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"DELETE FROM T_SPG_PRODUTO WHERE CD_PRODUTO = ?");
 		stmt.setInt(1, n);
@@ -49,7 +39,7 @@ public class ProdutoDAO {
 		return l + " Produto Excluido!";
 	}
 	
-	public String atualizaProduto(ProdutoBeans p) throws SQLException{
+	public String atualizaProduto(ProdutoBeans p, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"UPDATE T_SPG_PRODUTO SET DS_PRODUTO = ?, VL_PRECO_UNITARIO = ?, DS_DISPONIBILIDADE = ?, NM_PRODUTO = ?, DS_URL = ? WHERE CD_PRODUTO = ?");
 		stmt.setString(1,p.getDescProd());
@@ -64,7 +54,7 @@ public class ProdutoDAO {
 		return l + " Produto alterado!";
 	}
 	
-	public ProdutoBeans pesquisaProduto(int n) throws SQLException{
+	public ProdutoBeans pesquisaProduto(int n, Connection con) throws SQLException{
 		ProdutoBeans p = new ProdutoBeans();
 		stmt = con.prepareStatement("SELECT * FROM T_SPG_PRODUTO WHERE CD_PRODUTO = ?");
 		stmt.setInt(1, n);
@@ -81,7 +71,7 @@ public class ProdutoDAO {
 		return p;
 	}
 	
-	public List<ProdutoBeans> listarProduto(){	
+	public List<ProdutoBeans> listarProduto(Connection con){	
 		try {
 			PreparedStatement ps = con.prepareStatement
 					("SELECT * FROM T_SPG_PRODUTO");

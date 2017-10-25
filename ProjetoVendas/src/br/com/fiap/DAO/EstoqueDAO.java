@@ -8,33 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.beans.EstoqueBeans;
-import br.com.fiap.conexao.Conexao;
 
 public class EstoqueDAO {
-	Connection con = null;
+
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	EstoqueBeans e = null;
-	
-	public EstoqueDAO(String usuario, String senha) throws Exception{
-		con = new Conexao().getConnection(usuario, senha);
-	}
-	
-	public void fechar() throws SQLException{
-		con.close();
-	}
-	
-	public String novoEstoque(EstoqueBeans e, String usuario, String senha) throws SQLException{
+
+	public String novoEstoque(EstoqueBeans e, Connection con) throws SQLException{
 		
 		EnderecoDAO dao=null;
 		
 		try{
-			dao=new EnderecoDAO(usuario, senha);
+			dao=new EnderecoDAO();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		
-		dao.novoEndereco(e.getEndereco());
+		dao.novoEndereco(e.getEndereco(),con);
 		
 		stmt = con.prepareStatement(
 				"INSERT INTO T_SPG_ESTOQUE"
@@ -47,7 +38,7 @@ public class EstoqueDAO {
 		return l + " Estoque cadastrado!";
 	}
 	
-	public String deletaEstoque(int cd) throws SQLException{
+	public String deletaEstoque(int cd, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"DELETE * FROM T_SPG_ESTOQUE WHERE CD_ESTOQUE = ?");
 		stmt.setInt(1, cd);
@@ -55,7 +46,7 @@ public class EstoqueDAO {
 		return l + " Estoque Deletado!";
 	}
 	
-	public String atualizaEstoque(EstoqueBeans e) throws SQLException{
+	public String atualizaEstoque(EstoqueBeans e, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"UPDATE T_SPG_ESTOQUE SET QT_LIMITE = ?, DS_DISPONIBILIDADE = ?");
 		stmt.setInt(1, e.getQntLimite());
@@ -64,7 +55,7 @@ public class EstoqueDAO {
 		return l + " Estoque atualizado!";
 	}
 	
-	public EstoqueBeans retornaEstoque(int cd) throws SQLException{
+	public EstoqueBeans retornaEstoque(int cd, Connection con) throws SQLException{
 		stmt = con.prepareStatement(
 				"SELECT * FROM T_SPG_ESTOQUE WHERE CD_ESTOQUE = ?");
 		stmt.setInt(1, cd);
@@ -77,7 +68,7 @@ public class EstoqueDAO {
 		return e;
 	}
 	
-	public List<EstoqueBeans> listarEstoques() throws SQLException{
+	public List<EstoqueBeans> listarEstoques(Connection con) throws SQLException{
 		List<EstoqueBeans> listaEstoque = new ArrayList<>();
 		stmt = con.prepareStatement(
 				"SELECT A.CD_ESTOQUE,"

@@ -9,25 +9,15 @@ import java.util.List;
 import br.com.fiap.beans.ClienteBeans;
 import br.com.fiap.beans.NotaFiscalBeans;
 import br.com.fiap.beans.VendaBeans;
-import br.com.fiap.conexao.Conexao;
 import br.com.fiap.retorno.RetornoVenda;
 
 
 public class VendaDAO {
-	
-	private Connection con;
+
 	private PreparedStatement stmt;
 	private ResultSet rs;
-	
-     public VendaDAO(String usuario, String senha) throws Exception{
-		
-		con = new Conexao().getConnection(usuario,senha);	
-	}
-	public void fechar()throws Exception {
-		con.close();
-	}
-	
-	public VendaBeans cadastrar(int x, String email,String data,String hora)throws Exception{
+
+	public VendaBeans cadastrar(int x, String email,String data,String hora, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT CD_USUARIO FROM T_SPG_USUARIO WHERE DS_EMAIL=?");
 		stmt.setString(1, email);
@@ -62,7 +52,7 @@ public class VendaDAO {
 		return vb;
 	}
 	
-	public String attValor(int cdv, int cd)throws Exception{
+	public String attValor(int cdv, int cd, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT VL_TOTAL_ITEM FROM T_SPG_ITEM_VENDA WHERE CD_VENDA=?");
 		stmt.setInt(1, cdv);
@@ -88,7 +78,7 @@ public class VendaDAO {
 		
 	}
 	
-	public String deletar(int cd)throws Exception{
+	public String deletar(int cd, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT CD_NF FROM T_SPG_VENDA WHERE CD_VENDA=?");
 		stmt.setInt(1, cd);
@@ -115,7 +105,7 @@ public class VendaDAO {
 		
 	}
 	
-	public List<RetornoVenda> consultar()throws Exception{
+	public List<RetornoVenda> consultar(Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("SELECT\r\n" + 
 				"    N.CD_NF,\r\n" + 
@@ -163,7 +153,7 @@ public class VendaDAO {
 		
 	}
 	
-	public String desconto(int cdv, double desc)throws Exception{
+	public String desconto(int cdv, double desc, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("UPDATE T_SPG_VENDA SET VL_VENDA=VL_VENDA-(VL_VENDA*?) WHERE CD_VENDA=?");
 		stmt.setDouble(1, desc/100);
@@ -175,7 +165,7 @@ public class VendaDAO {
 		return "Atualizado com sucesso!";
 	}
 	
-	public String aumento(int cdv, double aum)throws Exception{
+	public String aumento(int cdv, double aum, Connection con)throws Exception{
 		
 		stmt=con.prepareStatement("UPDATE T_SPG_VENDA SET VL_VENDA=VL_VENDA+(VL_VENDA*?) WHERE CD_VENDA=?");
 		stmt.setDouble(1, aum/100);

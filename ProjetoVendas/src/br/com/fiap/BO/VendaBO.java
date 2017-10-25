@@ -1,5 +1,6 @@
 package br.com.fiap.BO;
 
+import java.sql.Connection;
 import java.util.List;
 
 import br.com.fiap.DAO.VendaDAO;
@@ -8,56 +9,49 @@ import br.com.fiap.retorno.RetornoVenda;
 
 public class VendaBO {
 	
-	public static VendaBeans cadastro(int x,String email,String data,String hora,String usuario,String senha)throws Exception{
+	public static VendaBeans cadastro(int x,String email,String data,String hora, Connection con)throws Exception{
 		
-		VendaDAO dao=new VendaDAO(usuario, senha);
+		VendaDAO dao=new VendaDAO();
 		
 		if(email.indexOf('@')<0){
 			VendaBeans vb=new VendaBeans();
-			dao.fechar();
 			return vb;
 		}else{
-			VendaBeans vb=dao.cadastrar(x, email, data, hora);
-			dao.fechar();			
+			VendaBeans vb=dao.cadastrar(x, email, data, hora, con);		
 			return vb;
 		}		
 	}
 	
-	public static String attValor(int cdv, int cd,String usuario,String senha)throws Exception{
+	public static String attValor(int cdv, int cd, Connection con)throws Exception{
 		
-		VendaDAO dao=new VendaDAO(usuario, senha);
-		List<RetornoVenda> lista=dao.consultar();
+		VendaDAO dao=new VendaDAO();
+		List<RetornoVenda> lista=dao.consultar(con);
 		
 		if(cdv<=0||(cdv>lista.size()+1)) {
-			dao.fechar();
 			return "Código de venda inválido";
 		}else {			
-			String ret=dao.attValor(cdv, cd);
-			dao.fechar();			
+			String ret=dao.attValor(cdv, cd, con);		
 			return ret;
 		}		
 	}
 	
-	public static String deletar(int cd,String usuario,String senha)throws Exception{
+	public static String deletar(int cd, Connection con)throws Exception{
 		
-		VendaDAO dao=new VendaDAO(usuario, senha);
-		List<RetornoVenda> lista=dao.consultar();
+		VendaDAO dao=new VendaDAO();
+		List<RetornoVenda> lista=dao.consultar(con);
 		
 		if(cd<=0||cd>lista.size()) {
-			dao.fechar();
 			return "Código de venda inválido";
 		}else {			
-			String ret=dao.deletar(cd);
-			dao.fechar();			
+			String ret=dao.deletar(cd, con);		
 			return ret;
 		}			
 	}
 	
-	public static List<RetornoVenda> consultar(String usuario,String senha)throws Exception{
+	public static List<RetornoVenda> consultar(Connection con)throws Exception{
 		
-		VendaDAO dao=new VendaDAO(usuario, senha);
-		List<RetornoVenda> lista=dao.consultar();
-		dao.fechar();
+		VendaDAO dao=new VendaDAO();
+		List<RetornoVenda> lista=dao.consultar(con);
 		
 		if(lista.size()>0) {
 			return lista;
@@ -67,31 +61,27 @@ public class VendaBO {
 		
 	}
 	
-	public static String desconto(int cdv, double desc,String usuario,String senha)throws Exception{
+	public static String desconto(int cdv, double desc, Connection con)throws Exception{
 		
-		VendaDAO dao=new VendaDAO(usuario, senha);
+		VendaDAO dao=new VendaDAO();
 		if (cdv>0&&desc>0&&desc<100) {
 			
-			String ret=dao.desconto(cdv, desc);
-			dao.fechar();
+			String ret=dao.desconto(cdv, desc, con);
 			
 			return ret;
 		}else {
-			dao.fechar();
 			throw new RuntimeException();
 		}
 		
 	}
 	
-	public static String aumento(int cdv, double desc,String usuario,String senha)throws Exception{
+	public static String aumento(int cdv, double desc, Connection con)throws Exception{
 		
-		VendaDAO dao=new VendaDAO(usuario, senha);
+		VendaDAO dao=new VendaDAO();
 		if (cdv>0&&desc>0) {			
-			String ret=dao.aumento(cdv, desc);	
-			dao.fechar();
+			String ret=dao.aumento(cdv, desc, con);	
 			return ret;
 		}else {
-			dao.fechar();
 			throw new RuntimeException();
 		}
 		

@@ -1,6 +1,9 @@
 package br.com.fiap.BO;
 
 import br.com.fiap.beans.TelefoneBeans;
+
+import java.sql.Connection;
+
 import br.com.fiap.DAO.TelefoneDAO;
 
 public class TelefoneBO {
@@ -13,7 +16,7 @@ public class TelefoneBO {
 		return"";
 	}
 	
-	public static String novoTelefone(int ex, TelefoneBeans t, String usuario, String senha) throws Exception{
+	public static String novoTelefone(int ex, TelefoneBeans t, Connection con) throws Exception{
 
 		if(t.getDdd()<99 || t.getDdd()>100) {
 			return "DDD inválido!";
@@ -24,17 +27,17 @@ public class TelefoneBO {
 		if(t.getRamal()==0) {
 			return "Ramal inválido!";
 		}
-		new TelefoneDAO(usuario, senha).novoTelefone(ex, t);
+		new TelefoneDAO().novoTelefone(ex, t, con);
 		return "";
 	}
 
-	public static String deletaTelefone(String email, String usuario, String senha) throws Exception{
+	public static String deletaTelefone(String email, Connection con) throws Exception{
 		validaEmail(email);
-		new TelefoneDAO(usuario, senha).deletaTelefone(email);
+		new TelefoneDAO().deletaTelefone(email, con);
 		return"";
 	}
 
-	public static String atualizaTelefone(TelefoneBeans t, String email, String usuario, String senha) throws Exception{
+	public static String atualizaTelefone(TelefoneBeans t, String email, Connection con) throws Exception{
 		validaEmail(email);
 		if(t.getDdd()<99 || t.getDdd()>100) {
 			return "DDD inválido!";
@@ -45,7 +48,7 @@ public class TelefoneBO {
 		if(t.getRamal()==0) {
 			return "Ramal inválido!";
 		}
-		new TelefoneDAO(usuario, senha).atualizaTelefone(t, email);
+		new TelefoneDAO().atualizaTelefone(t, email, con);
 		return"";
 	}
 }

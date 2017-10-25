@@ -1,5 +1,6 @@
 package br.com.fiap.BO;
 
+import java.sql.Connection;
 import java.util.List;
 
 import br.com.fiap.DAO.FornecedorDAO;
@@ -8,7 +9,7 @@ import br.com.fiap.beans.FornecedorBeans;
 
 public class FornecedorBO {
 
-	public static String cadastrar(FornecedorBeans fb,EnderecoBeans e,String usuario, String senha)throws Exception{
+	public static String cadastrar(FornecedorBeans fb,EnderecoBeans e, Connection con)throws Exception{
 		
 		if(fb.getEmail().indexOf('@')<0) {
 			return "email inválido";
@@ -26,27 +27,25 @@ public class FornecedorBO {
 			return "razão social inválida";
 		}
 		
-		FornecedorDAO dao=new FornecedorDAO(usuario, senha);
-		String x=dao.cadastrar(fb, e, usuario, senha);
-		dao.fechar();
+		FornecedorDAO dao=new FornecedorDAO();
+		String x=dao.cadastrar(fb, e, con);
 		
 		return x;
 		
 	}
 	
-	public static List<FornecedorBeans> consultarNome(String nome,String usuario, String senha)throws Exception{
+	public static List<FornecedorBeans> consultarNome(String nome, Connection con)throws Exception{
 		
-		FornecedorDAO dao=new FornecedorDAO(usuario, senha);
-		List<FornecedorBeans> lista=dao.consultarNome(nome);
-		dao.fechar();
+		FornecedorDAO dao=new FornecedorDAO();
+		List<FornecedorBeans> lista=dao.consultarNome(nome,con);
 		return lista;
 		
 	}
 	
-	public static String deletar(int cd,String usuario, String senha)throws Exception{
+	public static String deletar(int cd, Connection con)throws Exception{
 		
-		FornecedorDAO dao=new FornecedorDAO(usuario,senha);
-		return dao.deletar(cd);
+		FornecedorDAO dao=new FornecedorDAO();
+		return dao.deletar(cd, con);
 		
 	}
 
